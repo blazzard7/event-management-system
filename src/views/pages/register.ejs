@@ -1,0 +1,23 @@
+<!-- server/src/views/pages/register.ejs -->
+<%- include('../layouts/main', { title: 'Register' }) %>
+<main>
+  <h1>Register</h1>
+  <form action="/api/auth/register" method="POST">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="role">Role:</label>
+      <select id="role" name="role" required>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+      </select>
+    </div>
+    <button type="submit">Register</button>
+  </form>
+</main>

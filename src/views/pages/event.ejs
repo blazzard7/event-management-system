@@ -1,0 +1,26 @@
+<!-- server/src/views/pages/event.ejs -->
+<%- include('../layouts/main', { title: event.title }) %>
+<main>
+  <h1><%= event.title %></h1>
+  <p><%= event.description %></p>
+  <p>Date: <%= event.date %></p>
+  <p>Time: <%= event.time %></p>
+  <p>Location: <%= event.location %></p>
+  <h2>Comments</h2>
+  <ul>
+    <% comments.forEach(comment => { %>
+      <li>
+        <p><%= comment.content %></p>
+        <p>By: <%= comment.User.username %></p>
+      </li>
+    <% }) %>
+  </ul>
+  <form action="/api/comments" method="POST">
+    <input type="hidden" name="eventId" value="<%= event.id %>">
+    <div>
+      <label for="content">Add a comment:</label>
+      <textarea id="content" name="content" required></textarea>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</main>

@@ -1,8 +1,8 @@
-const Event = require('../models/event');
-const Registration = require('../models/registration');
-const User = require('../models/user');
-const emailService = require('../utils/email');
-const { getIo } = require('../utils/socket');
+const Event = require('../models/event.js');
+const Registration = require('../models/registration.js');
+const User = require('../models/user.js');
+const emailService = require('../utils/email.js');
+const { getIo } = require('../utils/socket.js');
 
 class EventService {
   async createEvent(title, description, date, time, location, organizerId) {

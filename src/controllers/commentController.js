@@ -1,14 +1,14 @@
+// server/src/controllers/commentController.js
 const CommentService = require('../services/commentService.js');
-const CommentView = require('../views/commentView.js');
 
 class CommentController {
   async addComment(req, res) {
     try {
       const { content, eventId } = req.body;
-      const comment = await CommentService.addComment(content, eventId, req.user.userId);
-      CommentView.renderSuccess(res, comment);
+      await CommentService.addComment(content, eventId, req.user.userId);
+      res.redirect(`/events/${eventId}`);
     } catch (error) {
-      CommentView.renderError(res, error.message);
+      res.render('pages/event', { error: error.message });
     }
   }
 
@@ -16,9 +16,9 @@ class CommentController {
     try {
       const { eventId } = req.params;
       const comments = await CommentService.getComments(eventId);
-      CommentView.renderSuccess(res, comments);
+      res.render('pages/event', { comments });
     } catch (error) {
-      CommentView.renderError(res, error.message);
+      res.render('pages/event', { error: error.message });
     }
   }
 }

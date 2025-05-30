@@ -1,3 +1,4 @@
+// server/src/routes/commentRoutes.js
 const express = require('express');
 const commentController = require('../controllers/commentController.js');
 const authMiddleware = require('../middleware/authMiddleware.js');

@@ -1,23 +1,23 @@
+// server/src/controllers/userController.js
 const UserService = require('../services/userService.js');
-const UserView = require('../views/userView.js');
 
 class UserController {
   async getProfile(req, res) {
     try {
       const user = await UserService.getProfile(req.user.userId);
-      UserView.renderSuccess(res, user);
+      res.render('pages/profile', { user });
     } catch (error) {
-      UserView.renderError(res, error.message);
+      res.render('pages/profile', { error: error.message });
     }
   }
 
   async updateProfile(req, res) {
     try {
       const { username, password } = req.body;
-      const user = await UserService.updateProfile(req.user.userId, username, password);
-      UserView.renderSuccess(res, user);
+      await UserService.updateProfile(req.user.userId, username, password);
+      res.redirect('/profile');
     } catch (error) {
-      UserView.renderError(res, error.message);
+      res.render('pages/profile', { error: error.message });
     }
   }
 }

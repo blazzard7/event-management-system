@@ -1,41 +1,59 @@
-const EventService = require('../services/eventService');
-const EventView = require('../views/eventView');
+// server/src/controllers/eventController.js
+const EventService = require('../services/eventService.js');
+const CommentService = require('../services/commentService.js');
 
-class EventController{
-    async createEvent(req,res){
-        try{
-            const{title,description,date,time,location,orginizerId} = req.body;
-            const event = await EventService.createEvent(title,description,date,time,location,orginizerId);
-            EventView.renderSuccess(res,event);
-        }catch (error){
-            EventView.renderError(res, error.message);
-        }
+class EventController {
+  async createEvent(req, res) {
+    try {
+      const { title, description, date, time, location } = req.body;
+      const organizerId = req.user.userId;
+      await EventService.createEvent(title, description, date, time, location, organizerId);
+      res.redirect('/events');
+    } catch (error) {
+      res.render('pages/events', { error: error.message });
     }
-    async getEvents(req,res){
-        try{
-            const events = await EventService.getEvents();
-            EventView.renderSuccess(res,events);
-        } catch(error){
-            EventView.renderError(res,error.message);
-        }
+  }
+
+  async getEvents(req, res) {
+    try {
+      const events = await EventService.getEvents();
+      res.render('pages/events', { events });
+    } catch (error) {
+      res.render('pages/events', { error: error.message });
     }
-    async registerForEvent(req,res){
-        try{
-            const {eventId, userId} = req.body;
-            const registration = await EventService.registerForEvent(eventId,userId);
-            EventView.renderSuccess(res,registration);
-        } catch(error){
-            EventView.renderError(res,error.message);
-        }
+  }
+
+  async getEvent(req, res) {
+    try {
+      const { eventId } = req.params;
+      const event = await EventService.getEvent(eventId);
+      const comments = await CommentService.getComments(eventId);
+      res.render('pages/event', { event, comments });
+    } catch (error) {
+      res.render('pages/event', { error: error.message });
     }
-    async confirmrefistration(req,res){
-        try{
-            const{registrationId}=req.params
-            const registration = await EventService.registerForEvent(registrationId);
-            EventView.renderSuccess(res,registration);
-        } catch(error){
-            EventView.renderError(res,error.message);
-        }
+  }
+
+  async registerForEvent(req, res) {
+    try {
+      const { eventId } = req.body;
+      const userId = req.user.userId;
+      await EventService.registerForEvent(eventId, userId);
+      res.redirect(`/events/${eventId}`);
+    } catch (error) {
+      res.render('pages/event', { error: error.message });
     }
+  }
+
+  async confirmRegistration(req, res) {
+    try {
+      const { registrationId } = req.params;
+      await EventService.confirmRegistration(registrationId);
+      res.redirect('/events');
+    } catch (error) {
+      res.render('pages/events', { error: error.message });
+    }
+  }
 }
+
 module.exports = new EventController();

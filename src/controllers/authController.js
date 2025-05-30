@@ -1,14 +1,14 @@
+// server/src/controllers/authController.js
 const AuthService = require('../services/authService.js');
-const AuthView = require('../views/authView.js');
 
 class AuthController {
   async register(req, res) {
     try {
       const { username, password, role } = req.body;
       const user = await AuthService.register(username, password, role);
-      AuthView.renderSuccess(res, user);
+      res.redirect('/login');
     } catch (error) {
-      AuthView.renderError(res, error.message);
+      res.render('pages/register', { error: error.message });
     }
   }
 
@@ -16,10 +16,19 @@ class AuthController {
     try {
       const { username, password } = req.body;
       const token = await AuthService.login(username, password);
-      AuthView.renderSuccess(res, { token });
+      res.cookie('token', token, { httpOnly: true });
+      res.redirect('/events');
     } catch (error) {
-      AuthView.renderError(res, error.message);
+      res.render('pages/login', { error: error.message });
     }
+  }
+
+  async showRegister(req, res) {
+    res.render('pages/register');
+  }
+
+  async showLogin(req, res) {
+    res.render('pages/login');
   }
 }
 
