@@ -1,6 +1,30 @@
 // server/src/controllers/eventController.js
 const EventService = require('../services/eventService.js');
 const CommentService = require('../services/commentService.js');
+// src/controllers/eventController.js
+const Event = require('../models/event.js');
+
+exports.getEvents = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    const events = await Event.findAndCountAll({
+      offset: (page - 1) * limit,
+      limit: limit,
+    });
+
+    res.render('pages/events', {
+      title: 'Events',
+      events: events.rows,
+      currentPage: page,
+      totalPages: Math.ceil(events.count / limit),
+      limit: limit,
+    });
+  } catch (error) {
+    res.status(500).send({ error: 'Something went wrong!' });
+  }
+};
 
 class EventController {
   async createEvent(req, res) {

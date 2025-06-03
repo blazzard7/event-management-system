@@ -1,3 +1,4 @@
+// swagger/swaggerConfig.js
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -11,11 +12,11 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000', 
+        url: 'http://localhost:7777',
       },
     ],
   },
-  apis: ['./routes/*.js'], 
+  apis: ['./src/routes/*.js'], 
 };
 
 const specs = swaggerJsdoc(options);

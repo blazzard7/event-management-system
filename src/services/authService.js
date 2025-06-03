@@ -1,25 +1,49 @@
+// src/services/authService.js
+const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.js');
 
-class AuthService{
-    async register(username, password,role){
-        const hashedPassword = await bcrypt.hash(password,10);
-        const user = await User.create({username, password: hashedPassword, role});
-        return user;
+class AuthService {
+  async register(username, password, role) {
+    // Проверка, существует ли пользователь с таким именем
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      throw new Error('Username already exists');
     }
 
-async login(username, password){
-    const user = await User.findOne({where: {username}});
-    if(!user){
-        throw new Error("Неверные данные");
+    // Хеширование пароля
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Создание нового пользователя
+    const newUser = await User.create({
+      username,
+      password: hashedPassword,
+      role,
+    });
+
+    return newUser;
+  }
+
+  async login(username, password) {
+    // Поиск пользователя по имени
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      throw new Error('Invalid credentials');
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch){
-        throw new Error("Неверные данные");
+
+    // Проверка пароля
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new Error('Invalid credentials');
     }
-    const token = jwt.sign({userId: user.id, role: user.role}, process.env.JWT_SECRET,{expiresIn: '1h'});
+
+    // Генерация JWT-токена
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
     return token;
+  }
 }
-}
+
 module.exports = new AuthService();
