@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title>Events</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
@@ -14,28 +14,45 @@
         <li><a href="/">Home</a></li>
         <li><a href="/events">Events</a></li>
         <li><a href="/profile">Profile</a></li>
+        <% if (user && user.role === 'admin') { %>
+          <li><a href="/createEvent">Create Event</a></li>
+        <% } %>
         <li><a href="/logout">Logout</a></li>
       </ul>
     </nav>
   </header>
   <main>
     <h1>Events</h1>
-    <ul>
-      <% events.forEach(event => { %>
-        <li><%= event.title %> - <%= event.description %></li>
-      <% }) %>
-    </ul>
-    <div class="pagination">
-      <% if (currentPage > 1) { %>
-        <a href="/events?page=<%= currentPage - 1 %>&limit=<%= limit %>">Previous</a>
-      <% } %>
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <a href="/events?page=<%= i %>&limit=<%= limit %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
-      <% } %>
-      <% if (currentPage < totalPages) { %>
-        <a href="/events?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
-      <% } %>
-    </div>
+    <% if (events.length > 0) { %>
+      <ul>
+        <% events.forEach(event => { %>
+          <li>
+            <h2><%= event.title %></h2>
+            <p><%= event.description %></p>
+            <p>Date: <%= event.date %></p>
+            <p>Time: <%= event.time %></p>
+            <p>Location: <%= event.location %></p>
+            <form action="/events/register" method="POST">
+              <input type="hidden" name="eventId" value="<%= event.id %>">
+              <button type="submit">Register</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %>">Next &raquo;</a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <p>No events available.</p>
+    <% } %>
   </main>
   <footer>
     <p>&copy; 2025 Event Management System</p>

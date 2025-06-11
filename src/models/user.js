@@ -1,6 +1,6 @@
-// /src/models/user.js
+// src/models/user.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../utils/db.js');
+const sequelize = require('../config/db.js');
 
 const User = sequelize.define('User', {
   username: {
@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
   role: {
-    type: DataTypes.ENUM('student', 'teacher'),
+    type: DataTypes.STRING,
     allowNull: false,
   },
 }, {

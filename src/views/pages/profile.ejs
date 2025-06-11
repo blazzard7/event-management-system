@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
@@ -14,23 +14,37 @@
         <li><a href="/">Home</a></li>
         <li><a href="/events">Events</a></li>
         <li><a href="/profile">Profile</a></li>
+        <% if (user.role === 'admin') { %>
+          <li><a href="/createEvent">Create Event</a></li>
+        <% } %>
         <li><a href="/logout">Logout</a></li>
       </ul>
     </nav>
   </header>
   <main>
     <h1>Profile</h1>
-    <form action="/api/profile" method="POST">
+    <% if (user) { %>
       <div>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="<%= user.username %>" required>
       </div>
       <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+        <label for="role">Role:</label>
+        <input type="text" id="role" name="role" value="<%= user.role %>" required>
       </div>
-      <button type="submit">Update Profile</button>
-    </form>
+      <h2>Registered Events</h2>
+      <% if (events.length > 0) { %>
+        <ul>
+          <% events.forEach(event => { %>
+            <li><%= event.title %> - <%= event.date %> - <%= event.time %> - <%= event.location %></li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p>No events registered.</p>
+      <% } %>
+    <% } else { %>
+      <p>User not found</p>
+    <% } %>
   </main>
   <footer>
     <p>&copy; 2025 Event Management System</p>

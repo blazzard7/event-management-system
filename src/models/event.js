@@ -1,7 +1,6 @@
-// /src/models/event.js
+// src/models/event.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../utils/db.js');
-const User = require('./user.js');
+const sequelize = require('../config/db.js');
 
 const Event = sequelize.define('Event', {
   title: {
@@ -28,8 +27,5 @@ const Event = sequelize.define('Event', {
   tableName: 'events',
   timestamps: true,
 });
-
-Event.belongsTo(User, { foreignKey: 'organizerId' });
-User.hasMany(Event, { foreignKey: 'organizerId' });
 
 module.exports = Event;

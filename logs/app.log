@@ -1,0 +1,52 @@
+{"level":"info","message":"Server is running on port 7777","timestamp":"2025-06-11T15:52:51.745Z"}
+{"level":"error","message":"Registration error: ","timestamp":"2025-06-11T15:53:05.960Z"}
+{"level":"info","message":"Server is running on port 7777","timestamp":"2025-06-11T15:54:13.967Z"}
+{"level":"error","message":"Registration error: ","stack":"SequelizeConnectionRefusedError\n    at Client._connectionCallback (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\dialects\\postgres\\connection-manager.js:133:24)\n    at Client._handleErrorWhileConnecting (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\pg\\lib\\client.js:336:19)\n    at Client._handleErrorEvent (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\pg\\lib\\client.js:346:19)\n    at Connection.emit (node:events:524:28)\n    at Socket.reportStreamError (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\pg\\lib\\connection.js:57:12)\n    at Socket.emit (node:events:524:28)\n    at emitErrorNT (node:internal/streams/destroy:170:8)\n    at emitErrorCloseNT (node:internal/streams/destroy:129:3)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","timestamp":"2025-06-11T15:54:25.387Z"}
+{"level":"error","message":"Unable to connect to the database: ","timestamp":"2025-06-11T16:01:23.334Z"}
+{"level":"error","message":"Unable to connect to the database: connect ECONNREFUSED 127.0.0.1:5432","timestamp":"2025-06-11T16:03:08.659Z"}
+{"level":"error","message":"Unable to connect to the database: connect ECONNREFUSED 127.0.0.1:5432","timestamp":"2025-06-11T16:10:06.577Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:30:34.348Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:30:34.808Z"}
+{"level":"info","message":"User registered successfully: testuser","timestamp":"2025-06-11T16:31:43.761Z"}
+{"level":"error","message":"Login error: secretOrPrivateKey must have a value","stack":"Error: secretOrPrivateKey must have a value\n    at module.exports [as sign] (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\jsonwebtoken\\sign.js:111:20)\n    at AuthService.login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:41:23)\n    at async login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:27:21)","timestamp":"2025-06-11T16:36:08.666Z"}
+{"level":"error","message":"Login error: secretOrPrivateKey must have a value","stack":"Error: secretOrPrivateKey must have a value\n    at module.exports [as sign] (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\jsonwebtoken\\sign.js:111:20)\n    at AuthService.login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:41:23)\n    at async login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:27:21)","timestamp":"2025-06-11T16:40:00.091Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:40:57.229Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:40:57.242Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:43:50.821Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:43:50.826Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:47:19.718Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:47:19.722Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:49:47.083Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:49:47.087Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:51:28.842Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:51:28.846Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:52:57.448Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:52:57.453Z"}
+{"level":"info","message":"User registered successfully: deadlocked","timestamp":"2025-06-11T16:53:20.367Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:56:25.219Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:56:25.223Z"}
+{"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:12:20)","timestamp":"2025-06-11T16:56:30.604Z"}
+{"level":"info","message":"User registered successfully: deadlock","timestamp":"2025-06-11T16:56:41.782Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T16:57:05.691Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T16:57:05.696Z"}
+{"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:12:20)","timestamp":"2025-06-11T16:57:09.223Z"}
+{"level":"info","message":"User registered successfully: dead","timestamp":"2025-06-11T16:57:13.179Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:08:57.117Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:08:57.122Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:17:36.176Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:17:36.180Z"}
+{"level":"info","message":"User registered successfully: 123","timestamp":"2025-06-11T17:19:51.940Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:31:45.455Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:31:45.460Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:33:51.755Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:33:51.760Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:36:13.714Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:36:13.719Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:37:50.985Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:37:50.991Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:40:23.517Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:40:23.523Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:42:54.152Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:42:54.157Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T17:49:37.321Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T17:49:37.327Z"}

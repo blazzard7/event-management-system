@@ -2,51 +2,13 @@
 const express = require('express');
 const eventController = require('../controllers/eventController.js');
 const authMiddleware = require('../middleware/authMiddleware.js');
+const roleMiddleware = require('../middleware/roleMiddleware.js');
 
 const router = express.Router();
 
 /**
  * @swagger
- * /api/events:
- *   get:
- *     summary: Retrieve a list of events
- *     responses:
- *       200:
- *         description: A list of events.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Event'
- */
-router.get('/events', authMiddleware, eventController.getEvents);
-
-/**
- * @swagger
- * /api/events/{eventId}:
- *   get:
- *     summary: Retrieve a single event by ID
- *     parameters:
- *       - in: path
- *         name: eventId
- *         schema:
- *           type: string
- *         required: true
- *         description: The event ID
- *     responses:
- *       200:
- *         description: A single event.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Event'
- */
-router.get('/events/:eventId', authMiddleware, eventController.getEvent);
-
-/**
- * @swagger
- * /api/events:
+ * /events:
  *   post:
  *     summary: Create a new event
  *     requestBody:
@@ -54,20 +16,52 @@ router.get('/events/:eventId', authMiddleware, eventController.getEvent);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Event'
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               time:
+ *                 type: string
+ *                 format: time
+ *               location:
+ *                 type: string
  *     responses:
  *       201:
- *         description: The event was successfully created.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Event'
+ *         description: Event created successfully
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  */
-router.post('/events', authMiddleware, eventController.createEvent);
+router.post('/', authMiddleware, roleMiddleware('admin'), eventController.createEvent);
 
 /**
  * @swagger
- * /api/events/register:
+ * /events:
+ *   get:
+ *     summary: Get list of events
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number
+ *     responses:
+ *       200:
+ *         description: List of events retrieved successfully
+ */
+router.get('/', authMiddleware, eventController.getEvents);
+
+/**
+ * @swagger
+ * /events/register:
  *   post:
  *     summary: Register for an event
  *     requestBody:
@@ -78,29 +72,15 @@ router.post('/events', authMiddleware, eventController.createEvent);
  *             type: object
  *             properties:
  *               eventId:
- *                 type: string
+ *                 type: integer
  *     responses:
  *       200:
- *         description: Successfully registered for the event.
+ *         description: Registered for event successfully
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
  */
-router.post('/events/register', authMiddleware, eventController.registerForEvent);
-
-/**
- * @swagger
- * /api/events/confirm/{registrationId}:
- *   put:
- *     summary: Confirm a registration
- *     parameters:
- *       - in: path
- *         name: registrationId
- *         schema:
- *           type: string
- *         required: true
- *         description: The registration ID
- *     responses:
- *       200:
- *         description: The registration was successfully confirmed.
- */
-router.put('/events/confirm/:registrationId', authMiddleware, eventController.confirmRegistration);
+router.post('/register', authMiddleware, eventController.registerForEvent);
 
 module.exports = router;

@@ -1,26 +1,17 @@
-// /src/config/config.js
+// src/config/config.js
 require('dotenv').config();
 
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    storage: 'database.sqlite',
+    dialect: 'sqlite',
   },
   test: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME_TEST,
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    storage: 'database_test.sqlite',
+    dialect: 'sqlite',
   },
   production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME_PROD,
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    storage: 'database_prod.sqlite',
+    dialect: 'sqlite',
   },
 };

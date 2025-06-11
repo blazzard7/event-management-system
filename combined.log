@@ -1,0 +1,14 @@
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:21:01"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:24:42"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:32:30"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:35:25"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:39:02"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:41:42"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-05 14:42:57"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-11 20:26:42"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-11 20:36:42"}
+{"level":"error","message":"Registration error: Cannot destructure property 'username' of 'req.body' as it is undefined.","service":"event-management-system","timestamp":"2025-06-11 20:36:53"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-11 20:46:04"}
+{"level":"error","message":"misconfigured csrf","service":"event-management-system","timestamp":"2025-06-11 20:46:12"}
+{"level":"info","message":"Server is running on port 7777","service":"event-management-system","timestamp":"2025-06-11 20:46:56"}
+{"level":"error","message":"Registration error: connect ECONNREFUSED 127.0.0.1:5432","service":"event-management-system","timestamp":"2025-06-11 20:47:00"}

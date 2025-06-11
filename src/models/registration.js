@@ -1,6 +1,6 @@
 // /src/models/registration.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../utils/db.js');
+const sequelize = require('../config/db.js');
 const User = require('./user.js');
 const Event = require('./event.js');
 
