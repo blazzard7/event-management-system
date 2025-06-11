@@ -49,8 +49,9 @@ router.get('/register', authController.showRegister);
 router.get('/profile', authController.showProfile);
 
 // Новые формы
-router.get('/createEvent', (req, res) => {
-  res.render('pages/createEvent');
+app.get('/createEvent', (req, res) => {
+    const user = req.user; 
+    res.render('pages/createEvent', { user });
 });
 
 router.get('/registerForEvent', (req, res) => {

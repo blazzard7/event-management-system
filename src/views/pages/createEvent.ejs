@@ -14,19 +14,21 @@
         <li><a href="/">Home</a></li>
         <li><a href="/events">Events</a></li>
         <li><a href="/profile">Profile</a></li>
-        <% if (user && user.role === 'admin') { %>
-          <li><a href="/createEvent">Create Event</a></li>
-        <% } %>
+       <% if (typeof user !== 'undefined' && user.role === 'admin') { %>
+        <li><a href="/createEvent">Create Event</a></li>
+      <% } %>
         <li><a href="/logout">Logout</a></li>
       </ul>
     </nav>
   </header>
   <main>
-    <h1>Create Event</h1>
-    <% if (error) { %>
-      <div class="error"><%= error %></div>
-    <% } %>
-    <form action="/events" method="POST">
+     <h1>Create Event</h1>
+
+  <% if (typeof error !== 'undefined') { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+  
+  <form action="/events" method="POST">
       <div>
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
