@@ -83,4 +83,28 @@ router.get('/', authMiddleware, eventController.getEvents);
  */
 router.post('/register', authMiddleware, eventController.registerForEvent);
 
+/**
+ * @swagger
+ * /events/{id}:
+ *   delete:
+ *     summary: Delete an event
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Event ID
+ *     responses:
+ *       200:
+ *         description: Event deleted successfully
+ *       404:
+ *         description: Event not found
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
+router.delete('/:id', authMiddleware, roleMiddleware('admin'), eventController.deleteEvent);
+
 module.exports = router;

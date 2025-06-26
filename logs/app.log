@@ -182,3 +182,9 @@
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:57:43.251Z"}
 {"level":"error","message":"Login error: Invalid credentials","stack":"Error: Invalid credentials\n    at AuthService.login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:37:13)\n    at async login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:28:21)","timestamp":"2025-06-21T13:01:04.403Z"}
 {"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:13:20)","timestamp":"2025-06-21T13:01:20.321Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-26T18:53:04.461Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-26T18:53:04.465Z"}
+{"level":"info","message":"Event created successfully: 1","timestamp":"2025-06-26T18:54:06.679Z"}
+{"level":"info","message":"Event created successfully: 2","timestamp":"2025-06-26T18:54:31.794Z"}
+{"level":"info","message":"Event created successfully: 3","timestamp":"2025-06-26T18:58:12.316Z"}
+{"level":"info","message":"Event created successfully: 4","timestamp":"2025-06-26T18:58:26.399Z"}

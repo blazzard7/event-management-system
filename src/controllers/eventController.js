@@ -27,16 +27,16 @@ class EventController {
 
   async getEvents(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
+      const page = parseInt(req.query.page) || 1; // Получаем номер страницы из запроса
       const limit = 5; // Количество мероприятий на странице
-      const offset = (page - 1) * limit;
+      const offset = (page - 1) * limit; // Смещение для запроса
 
       const { count, rows: events } = await Event.findAndCountAll({
         limit,
         offset,
       });
 
-      const totalPages = Math.ceil(count / limit);
+      const totalPages = Math.ceil(count / limit); // Общее количество страниц
 
       res.render('pages/events', {
         events,
@@ -66,6 +66,22 @@ class EventController {
     } catch (error) {
       logger.error(`Event registration error: ${error.message}`, { stack: error.stack });
       res.status(400).json({ error: error.message });
+    }
+  }
+
+  async deleteEvent(req, res) {
+    try {
+      const { id } = req.params;
+      const event = await Event.findByPk(id);
+      if (!event) {
+        return res.status(404).json({ error: 'Event not found' });
+      }
+      await event.destroy();
+      logger.info(`Event deleted successfully: ${event.title}`);
+      res.status(200).json({ message: 'Event deleted successfully' });
+    } catch (error) {
+      logger.error(`Event deletion error: ${error.message}`, { stack: error.stack });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
   }
 }
