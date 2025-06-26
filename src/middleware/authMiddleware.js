@@ -1,28 +1,27 @@
 // src/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const logger = require('../utils/logger');
+const User = require('../models/user'); // Импортируем модель пользователя
 
 const authMiddleware = async (req, res, next) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
-    }
+  const token = req.cookies.token; // Получаем токен из cookies
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findByPk(decoded.id);
+  if (!token) {
+    return res.redirect('/login'); // Перенаправляем на страницу входа, если токен отсутствует
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Верифицируем токен
+    const user = await User.findByPk(decoded.id); // Находим пользователя по ID
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid token' });
+      return res.redirect('/login'); // Перенаправляем на страницу входа, если пользователь не найден
     }
 
-    req.user = user;
-    res.locals.user = user; // Передаем переменную user в шаблоны
+    req.user = user; // Добавляем пользователя в запрос
+    res.cookie('username', user.username); // Сохраняем имя пользователя в cookies
     next();
   } catch (error) {
-    logger.error(`Authentication error: ${error.message}`, { stack: error.stack });
-    res.status(401).json({ error: 'Invalid token' });
+    return res.redirect('/login'); // Перенаправляем на страницу входа в случае ошибки
   }
 };
 

@@ -89,3 +89,96 @@
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T19:36:54.567Z"}
 {"level":"info","message":"Event created successfully: 123","timestamp":"2025-06-11T19:40:25.422Z"}
 {"level":"info","message":"User registered for event: 123","timestamp":"2025-06-11T19:40:40.504Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-11T20:50:18.982Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-11T20:50:18.989Z"}
+{"level":"info","message":"User registered successfully: mari","timestamp":"2025-06-11T20:51:09.512Z"}
+{"level":"info","message":"Event created successfully: duty free","timestamp":"2025-06-11T20:53:53.912Z"}
+{"level":"info","message":"User registered for event: duty free","timestamp":"2025-06-11T20:54:38.883Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T17:58:27.905Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T17:58:27.911Z"}
+{"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:13:20)","timestamp":"2025-06-15T17:59:59.832Z"}
+{"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:13:20)","timestamp":"2025-06-15T18:00:07.919Z"}
+{"level":"info","message":"User registered successfully: dl","timestamp":"2025-06-15T18:00:15.974Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:22:14.364Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:22:14.369Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:25:27.838Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:25:27.842Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:29:45.842Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:29:45.847Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:41:26.291Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:41:26.296Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:44:59.150Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:44:59.156Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-15T18:55:32.038Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-15T18:55:32.043Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:23:23.087Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:23:23.091Z"}
+{"level":"error","message":"Login error: SQLITE_ERROR: no such column: email","stack":"Error\n    at Database.<anonymous> (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\dialects\\sqlite\\query.js:185:27)\n    at C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\dialects\\sqlite\\query.js:183:50\n    at new Promise (<anonymous>)\n    at Query.run (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\dialects\\sqlite\\query.js:183:12)\n    at C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\sequelize.js:315:28\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async SQLiteQueryInterface.select (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\dialects\\abstract\\query-interface.js:407:12)\n    at async User.findAll (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\model.js:1140:21)\n    at async User.findOne (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\sequelize\\lib\\model.js:1240:12)\n    at async AuthService.login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:29:18)","timestamp":"2025-06-19T18:23:42.823Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:24:25.234Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:24:25.237Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:27:38.318Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:27:38.322Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:35:16.035Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:35:16.039Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:35:31.320Z"}
+{"level":"error","message":"Error sending email: ENOENT: no such file or directory, open 'C:\\Users\\MSI\\Desktop\\event-management-system\\src\\views\\emails\\eventRegistration.ejs'","stack":"Error: ENOENT: no such file or directory, open 'C:\\Users\\MSI\\Desktop\\event-management-system\\src\\views\\emails\\eventRegistration.ejs'\n    at Object.openSync (node:fs:562:18)\n    at Object.readFileSync [as fileLoader] (node:fs:446:35)\n    at fileLoader (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:293:18)\n    at handleCache (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:233:16)\n    at C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:260:20\n    at new Promise (<anonymous>)\n    at tryHandleCache (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:258:14)\n    at exports.renderFile (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:491:10)\n    at sendEmail (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\emailService.js:18:28)\n    at registerForEvent (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\eventController.js:68:13)","timestamp":"2025-06-19T18:35:31.321Z"}
+{"level":"error","message":"Event registration error: ENOENT: no such file or directory, open 'C:\\Users\\MSI\\Desktop\\event-management-system\\src\\views\\emails\\eventRegistration.ejs'","stack":"Error: ENOENT: no such file or directory, open 'C:\\Users\\MSI\\Desktop\\event-management-system\\src\\views\\emails\\eventRegistration.ejs'\n    at Object.openSync (node:fs:562:18)\n    at Object.readFileSync [as fileLoader] (node:fs:446:35)\n    at fileLoader (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:293:18)\n    at handleCache (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:233:16)\n    at C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:260:20\n    at new Promise (<anonymous>)\n    at tryHandleCache (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:258:14)\n    at exports.renderFile (C:\\Users\\MSI\\Desktop\\event-management-system\\node_modules\\ejs\\lib\\ejs.js:491:10)\n    at sendEmail (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\emailService.js:18:28)\n    at registerForEvent (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\eventController.js:68:13)","timestamp":"2025-06-19T18:35:31.322Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:37:11.826Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:37:11.831Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:37:21.448Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:37:21.470Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:37:21.471Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:40:45.761Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:40:45.764Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:42:41.242Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:42:41.245Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:42:45.431Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:42:45.445Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:42:45.445Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:43:50.347Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:43:50.351Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:43:56.985Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:43:56.997Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:43:56.998Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:44:29.629Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:44:29.633Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:44:40.202Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:44:40.214Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:44:40.214Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:46:19.212Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:46:19.215Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:46:28.828Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:46:28.842Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:46:28.843Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-19T18:46:40.550Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-19T18:46:40.555Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:46:47.753Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:46:47.766Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:46:47.766Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-06-19T18:47:41.732Z"}
+{"level":"error","message":"Error sending email: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:47:41.735Z"}
+{"level":"error","message":"Event registration error: connect ECONNREFUSED 127.0.0.1:587","stack":"Error: connect ECONNREFUSED 127.0.0.1:587\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1634:16)","timestamp":"2025-06-19T18:47:41.735Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:24:37.935Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:24:37.938Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:27:18.247Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:27:18.250Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:28:45.802Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:28:45.806Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:31:22.192Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:31:22.196Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:37:37.732Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:37:37.736Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:40:11.022Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:40:11.025Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:44:23.976Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:44:23.980Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:45:09.122Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:45:09.125Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:45:53.941Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:45:53.945Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:50:59.714Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:50:59.718Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-21T12:57:43.248Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-21T12:57:43.251Z"}
+{"level":"error","message":"Login error: Invalid credentials","stack":"Error: Invalid credentials\n    at AuthService.login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:37:13)\n    at async login (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:28:21)","timestamp":"2025-06-21T13:01:04.403Z"}
+{"level":"error","message":"Registration error: Username already exists","stack":"Error: Username already exists\n    at AuthService.register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\services\\authService.js:11:13)\n    at async register (C:\\Users\\MSI\\Desktop\\event-management-system\\src\\controllers\\authController.js:13:20)","timestamp":"2025-06-21T13:01:20.321Z"}

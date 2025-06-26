@@ -9,8 +9,14 @@ const logger = require('./utils/logger');
 const path = require('path');
 const sequelize = require('./config/db'); // Импортируем конфигурацию базы данных
 const cookieParser = require('cookie-parser'); // Импортируем cookie-parser
+const http = require('http');
+const socketIo = require('socket.io');
+const authMiddleware = require('./middleware/authMiddleware'); // Импортируем middleware для проверки аутентификации
+require('./utils/scheduler.js');
 
 const app = express();
+const server = http.createServer(app); // Создаем HTTP-сервер
+const io = socketIo(server); // Интегрируем socket.io
 const port = process.env.PORT || 3000;
 
 // Настройка EJS
@@ -50,8 +56,8 @@ router.get('/profile', authController.showProfile);
 
 // Новые формы
 app.get('/createEvent', (req, res) => {
-    const user = req.user; 
-    res.render('pages/createEvent', { user });
+  const user = req.user;
+  res.render('pages/createEvent', { user });
 });
 
 router.get('/registerForEvent', (req, res) => {
@@ -62,14 +68,34 @@ router.get('/confirmRegistration', (req, res) => {
   res.render('pages/confirmRegistration');
 });
 
+// Добавление маршрута для чата с проверкой аутентификации
+router.get('/chat', authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat.html'));
+});
+
 // Использование router в приложении
 app.use(router);
+
+// Обработка подключения клиентов
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  // Обработка сообщений от клиентов
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg); // Отправляем сообщение всем подключенным клиентам
+  });
+
+  // Обработка отключения клиентов
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
 
 // Синхронизация базы данных и запуск сервера
 sequelize.sync()
   .then(() => {
     logger.info('Database connection has been established successfully.');
-    app.listen(port, () => {
+    server.listen(port, () => { // Запускаем сервер
       logger.info(`Server is running on port ${port}`);
     });
   })

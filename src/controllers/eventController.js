@@ -3,31 +3,27 @@ const Event = require('../models/event.js');
 const logger = require('../utils/logger');
 
 class EventController {
- async createEvent(req, res) {
-  try {
-    const { title, description, date, time, location } = req.body;
-    
-    // Проверка обязательных полей
-    if (!title || !description || !date || !time || !location) {
-      throw new Error('Missing required fields');
+  async createEvent(req, res) {
+    try {
+      const { title, description, date, time, location } = req.body;
+      if (!title || !description || !date || !time || !location) {
+        throw new Error('Missing required fields');
+      }
+      const event = await Event.create({
+        title,
+        description,
+        date,
+        time,
+        location,
+        organizerId: req.user.id,
+      });
+      logger.info(`Event created successfully: ${title}`);
+      res.status(201).json({ message: 'Event created successfully', event });
+    } catch (error) {
+      logger.error(`Event creation error: ${error.message}`, { stack: error.stack });
+      res.status(400).render('pages/createEvent', { error: error.message, user: req.user });
     }
-
-    const event = await Event.create({
-      title,
-      description,
-      date,
-      time,
-      location,
-      organizerId: req.user.id,
-    });
-
-    logger.info(`Event created successfully: ${title}`);
-    res.status(201).json({ message: 'Event created successfully', event });
-  } catch (error) {
-    logger.error(`Event creation error: ${error.message}`, { stack: error.stack });
-    res.status(400).render('pages/createEvent', { error: error.message, user: req.user });
   }
-}
 
   async getEvents(req, res) {
     try {
