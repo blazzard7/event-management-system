@@ -188,3 +188,6 @@
 {"level":"info","message":"Event created successfully: 2","timestamp":"2025-06-26T18:54:31.794Z"}
 {"level":"info","message":"Event created successfully: 3","timestamp":"2025-06-26T18:58:12.316Z"}
 {"level":"info","message":"Event created successfully: 4","timestamp":"2025-06-26T18:58:26.399Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-26T19:02:23.787Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-26T19:02:23.791Z"}
+{"level":"info","message":"Event deleted successfully: 3","timestamp":"2025-06-26T19:04:11.856Z"}
