@@ -191,3 +191,89 @@
 {"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-26T19:02:23.787Z"}
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-26T19:02:23.791Z"}
 {"level":"info","message":"Event deleted successfully: 3","timestamp":"2025-06-26T19:04:11.856Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-26T19:07:16.632Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-26T19:07:16.636Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-27T03:48:09.089Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-27T03:48:09.093Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-27T03:51:59.890Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-27T03:51:59.893Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-29T14:16:23.516Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-29T14:16:23.520Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-29T14:18:17.721Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-29T14:18:17.725Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-29T14:29:13.463Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-29T14:29:13.467Z"}
+{"level":"info","message":"User registered successfully: asd","timestamp":"2025-06-29T14:30:05.012Z"}
+{"level":"info","message":"Event created successfully: 12","timestamp":"2025-06-29T14:30:34.403Z"}
+{"level":"info","message":"User registered for event: 4","timestamp":"2025-06-29T14:30:48.269Z"}
+{"level":"info","message":"User registered successfully: 1234","timestamp":"2025-06-29T14:32:05.355Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T08:46:24.513Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T08:46:24.517Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:03:25.712Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:03:25.715Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:03:29.754Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:03:29.797Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:03:41.184Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:03:41.220Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:05:17.176Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:05:17.179Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:21.460Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:21.462Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:21.493Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:26.205Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:26.240Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:31.678Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:33.885Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:33.916Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:37.711Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:05:37.743Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:06:49.986Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:06:49.989Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:07:53.960Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:07:53.963Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:07:57.828Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:07:57.865Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:09:52.856Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:09:52.892Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:09:57.049Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:09:57.082Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:10:04.736Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:10:04.769Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:33:21.965Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:33:21.969Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:33:30.038Z"}
+{"level":"error","message":"Error: _this.services.languageUtils.isWhitelisted is not a function","timestamp":"2025-06-30T09:33:30.100Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:45:10.978Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:45:10.981Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:47:05.458Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:47:05.462Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:53:02.873Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:53:02.876Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T09:57:48.738Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T09:57:48.742Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:00:58.984Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:00:58.987Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:13:04.276Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:13:04.281Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:16:20.883Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:16:20.886Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:18:34.153Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:18:34.156Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:20:06.004Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:20:06.007Z"}
+{"level":"info","message":"Event created successfully: 2","timestamp":"2025-06-30T10:20:41.035Z"}
+{"level":"info","message":"Event deleted successfully: 2","timestamp":"2025-06-30T10:20:59.851Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-06-30T10:27:10.733Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-06-30T10:27:10.736Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-07-06T09:35:46.666Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-06T09:35:46.670Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-07-06T10:26:04.832Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-07-06T10:26:04.836Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-11-13T13:01:33.519Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-11-13T13:01:33.522Z"}
+{"level":"info","message":"User registered successfully: qwertyy","timestamp":"2025-11-13T13:04:14.425Z"}
+{"level":"info","message":"User registered successfully: asdf","timestamp":"2025-11-13T13:17:13.103Z"}
+{"level":"info","message":"Database connection has been established successfully.","timestamp":"2025-11-13T13:24:07.686Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-11-13T13:24:07.690Z"}
+{"level":"info","message":"User registered for event: 123","timestamp":"2025-11-13T13:25:42.329Z"}
+{"level":"info","message":"User registered successfully: zxcv","timestamp":"2025-11-13T13:28:24.061Z"}

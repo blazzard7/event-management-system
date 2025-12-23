@@ -1,28 +1,37 @@
 // src/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const User = require('../models/user'); // Импортируем модель пользователя
+const UserService = require('../services/userService.js');
 
-const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token; // Получаем токен из cookies
-
-  if (!token) {
-    return res.redirect('/login'); // Перенаправляем на страницу входа, если токен отсутствует
-  }
-
+module.exports = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Верифицируем токен
-    const user = await User.findByPk(decoded.id); // Находим пользователя по ID
-
-    if (!user) {
-      return res.redirect('/login'); // Перенаправляем на страницу входа, если пользователь не найден
+    const token = req.cookies.token;
+    
+    if (!token) {
+      req.user = null;
+      return next();
     }
-
-    req.user = user; // Добавляем пользователя в запрос
-    res.cookie('username', user.username); // Сохраняем имя пользователя в cookies
+    
+    // Проверяем токен
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Получаем пользователя из базы
+    const user = await UserService.getUserById(decoded.id);
+    
+    if (!user) {
+      res.clearCookie('token');
+      req.user = null;
+      return next();
+    }
+    
+    // Добавляем пользователя в запрос
+    req.user = user;
     next();
   } catch (error) {
-    return res.redirect('/login'); // Перенаправляем на страницу входа в случае ошибки
+    // Если токен невалиден, очищаем куку
+    if (error.name === 'JsonWebTokenError') {
+      res.clearCookie('token');
+    }
+    req.user = null;
+    next();
   }
 };
-
-module.exports = authMiddleware;

@@ -1,4 +1,3 @@
-// src/index.js
 const express = require('express');
 const { swaggerUi, specs } = require('./swagger/swaggerConfig.js');
 const eventRoutes = require('./routes/eventRoutes.js');
@@ -13,15 +12,42 @@ const http = require('http');
 const socketIo = require('socket.io');
 const authMiddleware = require('./middleware/authMiddleware'); // Импортируем middleware для проверки аутентификации
 require('./utils/scheduler.js');
+const cors = require('cors'); // Импортируем пакет cors
+const chatRoutes = require('./routes/chatRoutes');
+const session = require('express-session');
+const i18next = require('./config/i18n');
+const i18nextMiddleware = require('i18next-http-middleware');
 
 const app = express();
 const server = http.createServer(app); // Создаем HTTP-сервер
 const io = socketIo(server); // Интегрируем socket.io
 const port = process.env.PORT || 3000;
+// После других импортов
+const apiRoutes = require('./routes/apiRoutes');
+
+// Настройка загрузки файлов
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsDir));
+
+// Подключение API маршрутов
+app.use('/api', apiRoutes);
+
+
 
 // Настройка EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+app.use(session({
+  secret: 'secret_startsev',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(i18nextMiddleware.handle(i18next));
 
 // Настройка Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
@@ -34,6 +60,8 @@ app.use(cookieParser()); // Используем cookie-parser
 // Обслуживание статических файлов
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors()); // Используем cors 
+app.use(chatRoutes);
 // Определение router
 const router = express.Router();
 
@@ -89,6 +117,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
+});
+app.get('/change-language/:lng', (req, res) => {
+  const { lng } = req.params;
+  req.i18n.changeLanguage(lng);
+  res.redirect(req.get('referer') || '/'); // Перенаправляем обратно на предыдущую страницу или на главную
 });
 
 // Синхронизация базы данных и запуск сервера

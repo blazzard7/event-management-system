@@ -4,29 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title><%= t('login') %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
-    <h1>Event Management System</h1>
+    <h1><%= t('welcome') %></h1>
     <nav>
-      <a href="/">Home</a>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
+      <a href="/"><%= t('home') %></a>
+      <a href="/login"><%= t('login') %></a>
+      <a href="/register"><%= t('register') %></a>
+      <ul>
+        <li><a href="/change-language/en">EN</a></li>
+        <li><a href="/change-language/ru">RU</a></li>
+      </ul>
     </nav>
   </header>
   <main>
-    <h1>Login</h1>
+    <h1><%= t('login') %></h1>
     <% if (error) { %>
       <div class="error"><%= error %></div>
     <% } %>
     <form action="/login" method="POST">
-      <label for="username">Username:</label>
+      <label for="username"><%= t('username') %>:</label>
       <input type="text" id="username" name="username" required>
-      <label for="password">Password:</label>
+      <label for="password"><%= t('password') %>:</label>
       <input type="password" id="password" name="password" required>
-      <button type="submit">Login</button>
+      <button type="submit"><%= t('login') %></button>
     </form>
   </main>
   <script src="/scripts.js"></script>

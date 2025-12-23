@@ -4,56 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Event</title>
+  <title><%= t('createEvent') %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
+    <h1><%= t('welcome') %></h1>
     <nav>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/profile">Profile</a></li>
-       <% if (typeof user !== 'undefined' && user.role === 'admin') { %>
-        <li><a href="/createEvent">Create Event</a></li>
+      <a href="/"><%= t('home') %></a>
+      <a href="/events"><%= t('events') %></a>
+      <a href="/profile"><%= t('profile') %></a>
+      <a href="/chat"><%= t('chat') %></a>
+      <% if (user && user.role === 'admin') { %>
+        <a href="/events/create"><%= t('createEvent') %></a>
       <% } %>
-        <li><a href="/logout">Logout</a></li>
+      <a href="/logout"><%= t('logout') %></a>
+      <ul>
+        <li><a href="/change-language/en">EN</a></li>
+        <li><a href="/change-language/ru">RU</a></li>
       </ul>
     </nav>
   </header>
   <main>
-     <h1>Create Event</h1>
-
-  <% if (typeof error !== 'undefined') { %>
-    <div class="error"><%= error %></div>
-  <% } %>
-  
-  <form action="/events" method="POST">
-      <div>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-      </div>
-      <div>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-      </div>
-      <div>
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required>
-      </div>
-      <div>
-        <label for="time">Time:</label>
-        <input type="time" id="time" name="time" required>
-      </div>
-      <div>
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required>
-      </div>
-      <button type="submit">Create Event</button>
+    <h1><%= t('createEvent') %></h1>
+    <form action="/events" method="POST">
+      <label for="title"><%= t('eventName') %>:</label>
+      <input type="text" id="title" name="title" required>
+      <label for="description"><%= t('eventDescription') %>:</label>
+      <textarea id="description" name="description" required></textarea>
+      <label for="date"><%= t('eventDate') %>:</label>
+      <input type="date" id="date" name="date" required>
+      <label for="time"><%= t('eventTime') %>:</label>
+      <input type="time" id="time" name="time" required>
+      <label for="location"><%= t('eventLocation') %>:</label>
+      <input type="text" id="location" name="location" required>
+      <button type="submit"><%= t('createEvent') %></button>
     </form>
   </main>
-  <footer>
-    <p>&copy; 2025 Event Management System</p>
-  </footer>
 </body>
-</html>
+</html> 

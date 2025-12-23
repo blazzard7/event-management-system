@@ -4,50 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile</title>
+  <title><%= t('profile') %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
+    <h1><%= t('welcome') %></h1>
     <nav>
+      <a href="/"><%= t('home') %></a>
+      <a href="/events"><%= t('events') %></a>
+      <a href="/profile"><%= t('profile') %></a>
+      <a href="/chat"><%= t('chat') %></a>
+      <% if (user && user.role === 'admin') { %>
+        <a href="/createEvent"><%= t('createEvent') %></a>
+      <% } %>
+      <a href="/logout"><%= t('logout') %></a>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <% if (user.role === 'admin') { %>
-          <li><a href="/createEvent">Create Event</a></li>
-        <% } %>
-        <li><a href="/logout">Logout</a></li>
+        <li><a href="/change-language/en">EN</a></li>
+        <li><a href="/change-language/ru">RU</a></li>
       </ul>
     </nav>
   </header>
   <main>
-    <h1>Profile</h1>
-    <% if (user) { %>
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<%= user.username %>" required>
-      </div>
-      <div>
-        <label for="role">Role:</label>
-        <input type="text" id="role" name="role" value="<%= user.role %>" required>
-      </div>
-      <h2>Registered Events</h2>
-      <% if (events.length > 0) { %>
-        <ul>
-          <% events.forEach(event => { %>
-            <li><%= event.title %> - <%= event.date %> - <%= event.time %> - <%= event.location %></li>
-          <% }); %>
-        </ul>
-      <% } else { %>
-        <p>No events registered.</p>
-      <% } %>
-    <% } else { %>
-      <p>User not found</p>
-    <% } %>
+    <h1><%= t('profile') %></h1>
+    <p><%= t('username') %>: <%= user.username %></p>
+    <p><%= t('role') %>: <%= user.role %></p>
   </main>
-  <footer>
-    <p>&copy; 2025 Event Management System</p>
-  </footer>
 </body>
 </html>

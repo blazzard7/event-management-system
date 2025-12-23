@@ -4,28 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title><%= t('home') %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header>
     <nav>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/logout">Logout</a></li>
-        <li><a href="/register">Registration</a></li>
-        <li><a href="/login">Login</a></li>
+        <li><a href="/"><%= t('home') %></a></li>
+        <li><a href="/events"><%= t('events') %></a></li>
+        <li><a href="/profile"><%= t('profile') %></a></li>
+        <li><a href="/logout"><%= t('logout') %></a></li>
+        <li><a href="/register"><%= t('register') %></a></li>
+        <li><a href="/login"><%= t('login') %></a></li>
+        <li><a href="/change-language/en">EN</a></li>
+        <li><a href="/change-language/ru">RU</a></li>
       </ul>
     </nav>
   </header>
   <main>
-    <h1>Welcome to the Event Management System</h1>
-    <p>This is the home page.</p>
+    <h1><%= t('welcome') %></h1>
+    <p><%= t('homePageDescription') %></p>
   </main>
   <footer>
-    <p>&copy; 2025 Event Management System</p>
+    <p>&copy; 2025 <%= t('eventManagementSystem') %></p>
   </footer>
 </body>
 </html>
