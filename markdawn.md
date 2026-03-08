@@ -1,194 +1,318 @@
-Как развернуть на любом ПК
-1. Установить базовое ПО
+Что нужно заранее
 
-На любом ПК нужны:
+На ПК должны быть установлены:
 
-Node.js 20 LTS или 22 LTS
+Node.js 18+
 
 MySQL Server 8.x
 
-Git
+желательно MySQL Workbench для удобной проверки БД
 
-Это требование следует из того, что проект запускается через Node.js, а серверный код подключается к MySQL на localhost:3306.
+Проект рассчитан на:
 
-2. Скачать проект
+backend на Node.js/Express
 
-В терминале:
+БД MySQL
 
-git clone https://github.com/blazzard7/event-management-system.git
-cd event-management-system
-3. Не использовать node_modules из репозитория
+автоинициализацию схемы при старте
 
-В репозитории уже лежит папка node_modules, но для переноса на любой ПК ее лучше удалить и установить зависимости заново:
+запуск одной командой: npm run start:one
 
-rm -rf node_modules
+Вариант 1. Локальный запуск на Windows
+1. Распаковать проект
+
+Распакуй архив, например в:
+
+C:\projects\event-management-system-production
+
+Перейди в эту папку через PowerShell.
+
+2. Установить зависимости
+
+В папке проекта выполни:
+
 npm install
+3. Запустить MySQL
 
-На Windows PowerShell:
+Нужно, чтобы служба MySQL уже работала.
 
-Remove-Item -Recurse -Force node_modules
-npm install
+Проверить можно так:
 
-Это нужно, потому что node_modules не переносимы между разными ОС и иногда между версиями Node. Сам факт наличия node_modules в репозитории виден в структуре проекта.
+открыть MySQL Workbench
 
-4. Доустановить отсутствующие зависимости
+подключиться к Local instance MySQL
 
-Так как в коде используются sequelize и cors, а в package.json их нет, нужно установить их вручную:
+Если подключение открывается — сервер БД работает.
 
-npm install sequelize cors
+4. Создать .env
 
-Иначе приложение упадет на require('sequelize') или require('cors').
+В корне проекта скопируй пример:
 
-5. Создать и настроить MySQL
+Copy-Item .env.example .env
+5. Заполнить .env
 
-Открой MySQL и создай БД:
+Открой .env и укажи реальные параметры MySQL.
 
-CREATE DATABASE event_managment_system;
+Пример:
 
-Затем создай пользователя либо используй своего локального пользователя MySQL. Код по умолчанию подключается к:
+NODE_ENV=development
+PORT=3000
+JWT_SECRET=change_this_secret
 
-БД event_managment_system
-
-хост localhost
-
-порт 3306
-
-6. Исправить .env
-
-Сейчас в публичном .env уже прописаны имя БД, пользователь, пароль, хост и порт. Для развёртывания на любом ПК эти значения нужно заменить на локальные, а также добавить JWT_SECRET, потому что код логина использует его для JWT.
-
-Пример .env:
-
-DB_NAME=event_managment_system
-DB_USER=root
-DB_PASSWORD=your_mysql_password
 DB_HOST=localhost
 DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=ВАШ_ПАРОЛЬ_ОТ_MYSQL
+DB_NAME=event_management_system
+
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=Admin123!
+
+Важно:
+
+DB_USER и DB_PASSWORD должны совпадать с пользователем MySQL
+
+DB_NAME можно оставить как есть
+
+6. Выдать пользователю MySQL права на создание базы
+
+Если ты используешь root, обычно ничего дополнительно делать не нужно.
+
+Если используется другой пользователь, у него должны быть права:
+
+на создание базы
+
+на создание таблиц
+
+на вставку и обновление данных
+
+7. Запустить проект одной командой
+npm run start:one
+
+Что должно произойти:
+
+приложение подключится к MySQL
+
+при необходимости создаст базу event_management_system
+
+создаст таблицы
+
+создаст администратора из .env
+
+запустит cron-задачи
+
+поднимет HTTP-сервер
+
+поднимет socket.io
+
+8. Проверить запуск
+
+Открыть в браузере:
+
+http://localhost:3000
+
+Проверка health:
+
+http://localhost:3000/health
+
+Swagger:
+
+http://localhost:3000/api-docs
+9. Вход под администратором
+
+Если проект создаёт admin автоматически, используй данные из .env:
+
+email: admin@example.com
+password: Admin123!
+
+Либо свои, если ты их поменял.
+
+Что именно разворачивается вместе с БД
+
+При запуске npm run start:one должны подниматься сразу все части:
+
+веб-приложение
+
+API
+
+соединение с MySQL
+
+автоинициализация БД
+
+таблицы
+
+сидирование администратора
+
+планировщик задач
+
+чат через socket.io
+
+То есть БД не запускается из Node.js сама как отдельная программа — MySQL должен быть установлен и запущен заранее, а приложение уже подключается к нему и разворачивает свою схему.
+
+Как это выглядит по шагам внутри проекта
+
+Обычно цепочка такая:
+
+читается .env
+
+создаётся pool MySQL
+
+вызывается инициализация БД
+
+создаются таблицы:
+
+users
+
+events
+
+registrations
+
+categories
+
+locations
+
+comments
+
+notifications
+
+служебные таблицы, если они предусмотрены
+
+создаётся admin
+
+стартует сервер
+
+Если база не создаётся автоматически
+
+Если в твоей версии проекта автоинициализация создаёт только таблицы, но не саму базу, тогда сначала вручную создай БД в MySQL Workbench:
+
+CREATE DATABASE event_management_system;
+
+После этого снова запусти:
+
+npm run start:one
+Как развернуть на другом ПК
+
+На любом другом ПК порядок тот же:
+
+установить Node.js
+
+установить MySQL
+
+распаковать проект
+
+выполнить npm install
+
+создать .env
+
+указать логин/пароль MySQL
+
+выполнить npm run start:one
+
+Как развернуть на сервере
+
+Если нужно не просто локально, а на VPS/сервере, порядок почти тот же:
+
+1. Установить:
+
+Node.js
+
+MySQL Server
+
+PM2
+
+2. Настроить .env
+
+Пример:
+
+NODE_ENV=production
 PORT=3000
-JWT_SECRET=change_this_to_long_random_secret
-NODE_ENV=development
-7. Исправить файл src/index.js
+JWT_SECRET=very-strong-secret
 
-В src/index.js используется fs.existsSync(...), но модуль fs не импортирован. Добавь в начало файла:
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=app_user
+DB_PASSWORD=strong_password
+DB_NAME=event_management_system
 
-const fs = require('fs');
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=Admin123!
+3. Установить зависимости
+npm install --production
+4. Запустить инициализацию и сервер
 
-Иначе сервер упадет еще до запуска. Это видно прямо в коде src/index.js: fs используется для создания папки uploads, но импорта нет.
+Если используется one-command script:
 
-8. Исправить отсутствующий src/config/database.js
+npm run start:one
 
-Сервисы authService.js и eventService.js импортируют ../config/database, но такого файла нет. При этом в зависимостях есть mysql2, а сами сервисы используют pool.execute(...), то есть им нужен mysql2 pool, а не Sequelize.
+или через PM2:
 
-Создай файл src/config/database.js с таким содержимым:
+pm2 start ecosystem.config.js
+5. Настроить reverse proxy
 
-const mysql = require('mysql2/promise');
-require('dotenv').config();
+Обычно перед Node.js ставят Nginx:
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT || 3306),
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'event_managment_system',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+принимает запросы на 80/443
 
-module.exports = pool;
-9. Учесть, что в проекте смешаны 2 подхода к БД
+проксирует на localhost:3000
 
-Сейчас проект смешивает:
+6. Для production желательно:
 
-Sequelize + src/config/db.js + MySQL
+включить HTTPS
 
-raw SQL через pool.execute(...)
+ограничить доступ к MySQL только локально
 
-src/config/config.js, где описан SQLite
+сделать резервные копии БД
 
-файл database.sqlite в корне проекта
+использовать отдельного пользователя MySQL, а не root
 
-На практике для быстрого запуска лучше идти по пути MySQL, потому что src/index.js использует sequelize.sync(), а сервисы авторизации и событий — raw SQL для MySQL. SQLite-конфиг в текущем состоянии выглядит как остаток другой реализации, а не как основной путь запуска. Это уже вывод по структуре кода.
+Рекомендуемая схема MySQL для production
 
-10. Бэкап БД
+Лучше создать отдельного пользователя:
 
-Минимальная схема для запуска:
+CREATE DATABASE event_management_system;
+CREATE USER 'event_user'@'localhost' IDENTIFIED BY 'strong_password';
+GRANT ALL PRIVILEGES ON event_management_system.* TO 'event_user'@'localhost';
+FLUSH PRIVILEGES;
 
-USE event_managment_system;
+И в .env:
 
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  password_hash VARCHAR(255) NOT NULL,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  phone VARCHAR(50),
-  role VARCHAR(50) DEFAULT 'user',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=event_user
+DB_PASSWORD=strong_password
+DB_NAME=event_management_system
 
-CREATE TABLE locations (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  address VARCHAR(255),
-  city VARCHAR(100),
-  capacity INT DEFAULT 0
-);
+Так безопаснее, чем работать через root.
 
-CREATE TABLE events (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  description TEXT,
-  date_time DATETIME NOT NULL,
-  location_id INT,
-  organizer_id INT NOT NULL,
-  max_participants INT DEFAULT 0,
-  price DECIMAL(10,2) DEFAULT 0,
-  status VARCHAR(50) DEFAULT 'active',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE SET NULL,
-  FOREIGN KEY (organizer_id) REFERENCES users(id) ON DELETE CASCADE
-);
+Если что-то не запускается
+Ошибка подключения к MySQL
 
-CREATE TABLE registrations (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  event_id INT NOT NULL,
-  notes TEXT,
-  status VARCHAR(50) DEFAULT 'pending',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY unique_registration (user_id, event_id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
-);
+Проверь:
 
-Это не официальная схема из репозитория, а восстановленная по SQL-запросам в сервисах. Она покрывает те поля, которые код явно читает и записывает.
+MySQL действительно запущен
 
-11. Запустить проект
+правильный пароль в .env
 
-Для разработки:
+правильный порт 3306
 
-npm run dev
+правильный пользователь
 
-Для обычного запуска:
+Ошибка “Unknown database”
 
-npm start
+Создай БД вручную:
 
-Скрипты именно такие указаны в package.json.
+CREATE DATABASE event_management_system;
+Ошибка прав доступа
 
-12. Проверить в браузере
+Нужно выдать пользователю права на БД.
 
-После запуска открой:
+Ошибка порта 3000
 
-http://localhost:3000/ — главная
+Значит порт занят. В .env можно поменять:
 
-http://localhost:3000/login — вход
+PORT=3001
+Минимальная инструкция для преподавателя
 
-http://localhost:3000/register — регистрация
+Развёртывание системы выполняется следующим образом:
+Сначала на компьютер устанавливаются Node.js и MySQL Server. Затем проект распаковывается в локальную директорию, после чего в корне проекта создаётся файл .env на основе .env.example, где задаются параметры подключения к MySQL и служебные переменные приложения. Далее устанавливаются зависимости командой npm install. После этого выполняется запуск npm run start:one, в ходе которого приложение подключается к MySQL, создаёт структуру базы данных, добавляет администратора и запускает веб-сервер. После завершения запуска система доступна по адресу http://localhost:3000, а документация API — по адресу http://localhost:3000/api-docs.
 
-http://localhost:3000/api-docs — Swagger
-Есть еще несколько мест, которые выглядят проблемными:
-
-scheduler.js использует Event, User и Op, но в самом файле они не импортированы; значит планировщик может падать при выполнении.
-
-В src/index.js стоит жестко заданный секрет сессии secret_startsev; для нормального развёртывания лучше вынести его в .env.
