@@ -1,33 +1,48 @@
-<!-- src/views/pages/home.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= t('home') %></title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <header>
-    <nav>
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="hero">
+  <h1>Upcoming events</h1>
+  <p>Clean MySQL edition with chat, notifications and scheduler.</p>
+</section>
+<div class="grid two-cols">
+  <section>
+    <h2>Events</h2>
+    <div class="cards">
+      <% events.forEach(event => { %>
+        <article class="card">
+          <h3><a href="/events/<%= event.id %>"><%= event.title %></a></h3>
+          <p><%= event.description || 'No description' %></p>
+          <p><strong>When:</strong> <%= new Date(event.start_at).toLocaleString() %></p>
+          <p><strong>Status:</strong> <%= event.status %></p>
+          <p><strong>Location:</strong> <%= event.location_name || 'Not set' %></p>
+          <p><strong>Registered:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+  <aside>
+    <section class="card chat-box">
+      <h2>Live chat</h2>
+      <div id="chat-messages" class="chat-messages"></div>
+      <form id="chat-form">
+        <input id="chat-author" placeholder="Name" value="<%= currentUser ? currentUser.first_name + ' ' + currentUser.last_name : '' %>" />
+        <textarea id="chat-input" placeholder="Write a message"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+    <section class="card">
+      <h2>Categories</h2>
       <ul>
-        <li><a href="/"><%= t('home') %></a></li>
-        <li><a href="/events"><%= t('events') %></a></li>
-        <li><a href="/profile"><%= t('profile') %></a></li>
-        <li><a href="/logout"><%= t('logout') %></a></li>
-        <li><a href="/register"><%= t('register') %></a></li>
-        <li><a href="/login"><%= t('login') %></a></li>
-        <li><a href="/change-language/en">EN</a></li>
-        <li><a href="/change-language/ru">RU</a></li>
+        <% categories.forEach(category => { %>
+          <li><%= category.name %></li>
+        <% }) %>
       </ul>
-    </nav>
-  </header>
-  <main>
-    <h1><%= t('welcome') %></h1>
-    <p><%= t('homePageDescription') %></p>
-  </main>
-  <footer>
-    <p>&copy; 2025 <%= t('eventManagementSystem') %></p>
-  </footer>
-</body>
-</html>
+      <h2>Locations</h2>
+      <ul>
+        <% locations.forEach(location => { %>
+          <li><%= location.city %> — <%= location.name %></li>
+        <% }) %>
+      </ul>
+    </section>
+  </aside>
+</div>
+<%- include('../partials/footer') %>

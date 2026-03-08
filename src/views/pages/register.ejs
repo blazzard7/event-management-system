@@ -1,84 +1,12 @@
-<!-- src/views/pages/register.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= t('register') %></title>
-  <link rel="stylesheet" href="/styles.css">
-  <style>
-    .error {
-      color: red;
-      font-size: 0.8em;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1><%= t('welcome') %></h1>
-    <nav>
-      <a href="/"><%= t('home') %></a>
-      <a href="/login"><%= t('login') %></a>
-      <a href="/register"><%= t('register') %></a>
-      <ul>
-        <li><a href="/change-language/en">EN</a></li>
-        <li><a href="/change-language/ru">RU</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <h1><%= t('register') %></h1>
-    <% if (error) { %>
-      <div class="error"><%= error %></div>
-    <% } %>
-    <form id="registerForm" action="/register" method="POST">
-      <label for="username"><%= t('username') %>:</label>
-      <input type="text" id="username" name="username" required minlength="3" maxlength="20">
-      <span id="usernameError" class="error"></span>
-
-      <label for="password"><%= t('password') %>:</label>
-      <input type="password" id="password" name="password" required minlength="6">
-      <span id="passwordError" class="error"></span>
-
-      <label for="role"><%= t('role') %>:</label>
-      <select id="role" name="role" required>
-        <option value="user"><%= t('user') %></option>
-        <option value="admin"><%= t('admin') %></option>
-      </select>
-
-      <button type="submit"><%= t('register') %></button>
-    </form>
-  </main>
-  <script>
-    const registerForm = document.getElementById('registerForm');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const usernameError = document.getElementById('usernameError');
-    const passwordError = document.getElementById('passwordError');
-
-    registerForm.addEventListener('submit', function(event) {
-      let isValid = true;
-
-      // Validate Username
-      if (usernameInput.value.length < 3) {
-        usernameError.textContent = '<%= t(`usernameError`) %>';
-        isValid = false;
-      } else {
-        usernameError.textContent = '';
-      }
-
-      // Validate Password
-      if (passwordInput.value.length < 6) {
-        passwordError.textContent = '<%= t(`passwordError`) %>';
-        isValid = false;
-      } else {
-        passwordError.textContent = '';
-      }
-
-      if (!isValid) {
-        event.preventDefault();
-      }
-    });
-  </script>
-</body>
-</html>
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="form-card">
+  <h1>Register</h1>
+  <form method="post" action="/register">
+    <label>First name<input type="text" name="firstName" required></label>
+    <label>Last name<input type="text" name="lastName" required></label>
+    <label>Email<input type="email" name="email" required></label>
+    <label>Password<input type="password" name="password" required></label>
+    <button type="submit">Create account</button>
+  </form>
+</section>
+<%- include('../partials/footer') %>

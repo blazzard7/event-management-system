@@ -1,0 +1,17 @@
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="card">
+  <h1>Notifications</h1>
+  <ul>
+    <% notifications.forEach(notification => { %>
+      <li>
+        <strong><%= notification.title %></strong> — <%= notification.message %>
+        <% if (!notification.is_read) { %>
+          <form method="post" action="/notifications/<%= notification.id %>/read" class="inline-form">
+            <button type="submit">Mark as read</button>
+          </form>
+        <% } %>
+      </li>
+    <% }) %>
+  </ul>
+</section>
+<%- include('../partials/footer') %>

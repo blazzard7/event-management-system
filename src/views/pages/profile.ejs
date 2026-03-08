@@ -1,34 +1,8 @@
-<!-- src/views/pages/profile.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= t('profile') %></title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <header>
-    <h1><%= t('welcome') %></h1>
-    <nav>
-      <a href="/"><%= t('home') %></a>
-      <a href="/events"><%= t('events') %></a>
-      <a href="/profile"><%= t('profile') %></a>
-      <a href="/chat"><%= t('chat') %></a>
-      <% if (user && user.role === 'admin') { %>
-        <a href="/createEvent"><%= t('createEvent') %></a>
-      <% } %>
-      <a href="/logout"><%= t('logout') %></a>
-      <ul>
-        <li><a href="/change-language/en">EN</a></li>
-        <li><a href="/change-language/ru">RU</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <h1><%= t('profile') %></h1>
-    <p><%= t('username') %>: <%= user.username %></p>
-    <p><%= t('role') %>: <%= user.role %></p>
-  </main>
-</body>
-</html>
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="card">
+  <h1>Profile</h1>
+  <p><strong>Name:</strong> <%= currentUser.first_name %> <%= currentUser.last_name %></p>
+  <p><strong>Email:</strong> <%= currentUser.email %></p>
+  <p><strong>Role:</strong> <%= currentUser.role %></p>
+</section>
+<%- include('../partials/footer') %>

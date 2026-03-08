@@ -1,0 +1,36 @@
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="form-card">
+  <h1><%= event ? 'Edit event' : 'Create event' %></h1>
+  <form method="post" action="<%= action %>">
+    <label>Title<input type="text" name="title" value="<%= event?.title || '' %>" required></label>
+    <label>Description<textarea name="description"><%= event?.description || '' %></textarea></label>
+    <label>Start at<input type="datetime-local" name="startAt" value="<%= event ? new Date(event.start_at).toISOString().slice(0,16) : '' %>" required></label>
+    <label>End at<input type="datetime-local" name="endAt" value="<%= event ? new Date(event.end_at).toISOString().slice(0,16) : '' %>" required></label>
+    <label>Status
+      <select name="status">
+        <% ['draft','active','completed','cancelled'].forEach(status => { %>
+          <option value="<%= status %>" <%= event?.status === status ? 'selected' : '' %>><%= status %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>Category
+      <select name="categoryId">
+        <option value="">Select category</option>
+        <% categories.forEach(category => { %>
+          <option value="<%= category.id %>" <%= String(event?.category_id || '') === String(category.id) ? 'selected' : '' %>><%= category.name %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>Location
+      <select name="locationId">
+        <option value="">Select location</option>
+        <% locations.forEach(location => { %>
+          <option value="<%= location.id %>" <%= String(event?.location_id || '') === String(location.id) ? 'selected' : '' %>><%= location.city %> — <%= location.name %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label>Max participants<input type="number" name="maxParticipants" min="0" value="<%= event?.max_participants || 0 %>"></label>
+    <button type="submit"><%= event ? 'Save changes' : 'Create event' %></button>
+  </form>
+</section>
+<%- include('../partials/footer') %>

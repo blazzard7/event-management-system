@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-row">
+      <a class="brand" href="/">Event Management System</a>
+      <nav class="nav-links">
+        <a href="/">Events</a>
+        <% if (currentUser) { %>
+          <a href="/notifications">Notifications</a>
+          <a href="/profile">Profile</a>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/admin/events/new">Create event</a>
+          <% } %>
+          <form action="/logout" method="post" class="inline-form"><button type="submit">Logout</button></form>
+        <% } else { %>
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+        <% } %>
+      </nav>
+    </div>
+  </header>
+  <main class="container">

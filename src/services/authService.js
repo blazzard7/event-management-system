@@ -1,74 +1,29 @@
-// src/services/authService.js
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const pool = require('../config/database'); // Импортируем пул соединений
+const AppError = require('../lib/AppError');
+const userRepository = require('../repositories/userRepository');
+const { validateRegistrationPayload, validateLoginPayload } = require('../validators/authValidator');
 
-class AuthService {
-  async register(email, password, firstName, lastName, phone, role = 'user') {
-    // Проверка, существует ли пользователь с таким email
-    const [existingUsers] = await pool.execute(
-      'SELECT id FROM users WHERE email = ?',
-      [email]
-    );
-    
-    if (existingUsers.length > 0) {
-      throw new Error('Пользователь с таким email уже существует');
-    }
-
-    // Хеширование пароля
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Создание нового пользователя (прямой SQL-запрос)
-    const [result] = await pool.execute(
-      `INSERT INTO users 
-       (email, password_hash, first_name, last_name, phone, role) 
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [email, hashedPassword, firstName, lastName, phone, role]
-    );
-
-    return {
-      id: result.insertId,
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      role
-    };
+async function register(payload) {
+  const data = validateRegistrationPayload(payload);
+  const existing = await userRepository.findByEmail(data.email);
+  if (existing) {
+    throw new AppError('Email is already registered', 409);
   }
-
-  async login(email, password) {
-    // Поиск пользователя по email
-    const [users] = await pool.execute(
-      'SELECT * FROM users WHERE email = ?',
-      [email]
-    );
-    
-    if (users.length === 0) {
-      throw new Error('Неверный email или пароль');
-    }
-
-    const user = users[0];
-
-    // Проверка пароля
-    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-    if (!isPasswordValid) {
-      throw new Error('Неверный email или пароль');
-    }
-
-    // Генерация JWT-токена
-    const token = jwt.sign(
-      { 
-        id: user.id, 
-        email: user.email, 
-        role: user.role,
-        first_name: user.first_name,
-        last_name: user.last_name
-      }, 
-      process.env.JWT_SECRET || 'your-secret-key', // Добавьте в .env JWT_SECRET
-      { expiresIn: '1h' }
-    );
-
-    return { token, user: { ...user, password_hash: undefined } };
-  }
+  const passwordHash = await bcrypt.hash(data.password, 10);
+  return userRepository.createUser({ ...data, passwordHash });
 }
 
-module.exports = new AuthService();
+async function login(emailInput, passwordInput) {
+  const { email, password } = validateLoginPayload({ email: emailInput, password: passwordInput });
+  const user = await userRepository.findByEmail(email);
+  if (!user) {
+    throw new AppError('Invalid credentials', 401);
+  }
+  const valid = await bcrypt.compare(password, user.password_hash);
+  if (!valid) {
+    throw new AppError('Invalid credentials', 401);
+  }
+  return userRepository.findById(user.id);
+}
+
+module.exports = { register, login };

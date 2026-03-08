@@ -1,47 +1,31 @@
 {
-  "name": "event-management-system",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "event-management-system-production",
+  "version": "3.0.0",
+  "description": "Production-style MySQL event management system with scheduler, notifications and chat",
   "type": "commonjs",
-  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:init": "node src/db/init.js",
+    "start:one": "npm install && node src/server.js",
+    "prod:check": "node -e \"require('./src/config')\""
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
-    "csurf": "^1.11.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
+    "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "express-validator": "^7.2.1",
-    "i18next": "^25.2.1",
-    "i18next-express-middleware": "^2.0.0",
-    "i18next-fs-backend": "^2.6.0",
-    "i18next-http-middleware": "^3.7.4",
-    "jsonwebtoken": "^9.0.2",
-    "multer": "^2.0.2",
+    "helmet": "^8.1.0",
     "mysql2": "^3.16.0",
     "node-cron": "^4.1.0",
-    "nodemailer": "^7.0.3",
-    "pg": "^8.16.0",
-    "pg-hstore": "^2.3.4",
     "socket.io": "^4.8.1",
-    "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
-    "winston": "^3.17.0"
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "jest": "^30.2.0",
-    "nodemon": "^3.1.10",
-    "sequelize-mock": "^0.10.2",
-    "supertest": "^6.3.3"
+    "nodemon": "^3.1.10"
   }
 }

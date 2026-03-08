@@ -1,0 +1,48 @@
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="card">
+  <h1><%= event.title %></h1>
+  <p><%= event.description || 'No description' %></p>
+  <p><strong>Organizer:</strong> <%= event.organizer_name %></p>
+  <p><strong>Category:</strong> <%= event.category_name || 'Not set' %></p>
+  <p><strong>Location:</strong> <%= event.location_name || 'Not set' %><% if (event.location_address) { %>, <%= event.location_address %>, <%= event.location_city %><% } %></p>
+  <p><strong>Time:</strong> <%= new Date(event.start_at).toLocaleString() %> — <%= new Date(event.end_at).toLocaleString() %></p>
+  <p><strong>Status:</strong> <%= event.status %></p>
+  <p><strong>Participants:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
+
+  <% if (currentUser) { %>
+    <div class="actions">
+      <form method="post" action="/events/<%= event.id %>/register"><button type="submit">Register</button></form>
+      <form method="post" action="/events/<%= event.id %>/unregister"><button type="submit">Cancel registration</button></form>
+      <% if (currentUser.role === 'admin') { %>
+        <a class="button-link" href="/admin/events/<%= event.id %>/edit">Edit</a>
+        <form method="post" action="/admin/events/<%= event.id %>/delete"><button type="submit">Delete</button></form>
+      <% } %>
+    </div>
+  <% } %>
+</section>
+
+<section class="grid two-cols">
+  <article class="card">
+    <h2>Registrations</h2>
+    <ul>
+      <% registrations.forEach(registration => { %>
+        <li><%= registration.first_name %> <%= registration.last_name %> — <%= registration.email %></li>
+      <% }) %>
+    </ul>
+  </article>
+  <article class="card">
+    <h2>Comments</h2>
+    <% if (currentUser) { %>
+      <form method="post" action="/events/<%= event.id %>/comments">
+        <textarea name="body" placeholder="Write comment"></textarea>
+        <button type="submit">Add comment</button>
+      </form>
+    <% } %>
+    <ul>
+      <% comments.forEach(comment => { %>
+        <li><strong><%= comment.first_name %> <%= comment.last_name %>:</strong> <%= comment.body %></li>
+      <% }) %>
+    </ul>
+  </article>
+</section>
+<%- include('../partials/footer') %>

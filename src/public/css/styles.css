@@ -1,0 +1,19 @@
+body { font-family: Arial, sans-serif; margin: 0; background: #f5f7fb; color: #1f2937; }
+.container { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
+.site-header { background: #111827; color: white; margin-bottom: 24px; }
+.nav-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; gap: 16px; }
+.brand, .nav-links a { color: white; text-decoration: none; font-weight: 600; }
+.nav-links { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.hero { margin-bottom: 24px; }
+.grid { display: grid; gap: 20px; }
+.two-cols { grid-template-columns: 2fr 1fr; }
+.cards { display: grid; gap: 16px; }
+.card, .form-card { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 6px 20px rgba(0,0,0,.06); margin-bottom: 18px; }
+label { display: grid; gap: 6px; margin-bottom: 12px; }
+input, textarea, select, button { font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid #d1d5db; }
+button, .button-link { background: #2563eb; color: white; border: 0; cursor: pointer; text-decoration: none; display: inline-block; }
+.inline-form { display: inline; }
+.actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+.chat-messages { height: 280px; overflow: auto; background: #f9fafb; padding: 10px; border-radius: 8px; margin-bottom: 12px; }
+.chat-message { margin-bottom: 8px; }
+@media (max-width: 800px) { .two-cols { grid-template-columns: 1fr; } }
