@@ -4,7 +4,9 @@
   const authorInput = document.getElementById('chat-author');
   const textInput = document.getElementById('chat-input');
 
-  if (!chatMessages || !form || !window.io) return;
+  if (!chatMessages || !form || !window.io || typeof window.EVENT_ID === 'undefined') {
+    return;
+  }
 
   const socket = io();
 
@@ -22,12 +24,17 @@
   });
 
   socket.on('chat:message', renderMessage);
-  socket.on('chat:error', (message) => alert(message));
+  socket.on('chat:error', (message) => window.alert(message));
+  socket.emit('joinEventChat', window.EVENT_ID);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+    if (!textInput.value.trim()) {
+      return;
+    }
+
     socket.emit('chat:message', {
-      authorName: authorInput.value || 'Guest',
+      authorName: authorInput?.value || 'Guest',
       message: textInput.value
     });
     textInput.value = '';

@@ -25,5 +25,30 @@ function registerChatSocket(io) {
     });
   });
 }
+module.exports = (io) => {
+
+    io.on("connection", (socket) => {
+
+        socket.on("joinEventChat", (eventId) => {
+            socket.join("event_" + eventId);
+        });
+
+        socket.on("sendMessage", async (data) => {
+
+            const message = await chatService.sendMessage(
+                data.eventId,
+                data.userId,
+                data.message
+            );
+
+            io.to("event_" + data.eventId).emit(
+                "newMessage",
+                message
+            );
+        });
+
+    });
+
+};
 
 module.exports = { registerChatSocket };

@@ -1,36 +1,95 @@
 <%- include('../partials/header', { title, currentUser }) %>
 <section class="form-card">
-  <h1><%= event ? 'Edit event' : 'Create event' %></h1>
-  <form method="post" action="<%= action %>">
-    <label>Title<input type="text" name="title" value="<%= event?.title || '' %>" required></label>
-    <label>Description<textarea name="description"><%= event?.description || '' %></textarea></label>
-    <label>Start at<input type="datetime-local" name="startAt" value="<%= event ? new Date(event.start_at).toISOString().slice(0,16) : '' %>" required></label>
-    <label>End at<input type="datetime-local" name="endAt" value="<%= event ? new Date(event.end_at).toISOString().slice(0,16) : '' %>" required></label>
-    <label>Status
-      <select name="status">
-        <% ['draft','active','completed','cancelled'].forEach(status => { %>
-          <option value="<%= status %>" <%= event?.status === status ? 'selected' : '' %>><%= status %></option>
-        <% }) %>
-      </select>
+  <div class="section-head">
+    <h1><%= event ? 'Редактировать мероприятие' : 'Создать мероприятие' %></h1>
+    <p><%= isEdit ? 'Изменения увидят все пользователи каталога.' : 'Мероприятие появится в общем каталоге и в разделе "Мои мероприятия".' %></p>
+  </div>
+
+  <form method="post" action="<%= action %>" class="event-form">
+    <label>
+      Название
+      <input type="text" name="title" value="<%= event?.title || '' %>" required>
     </label>
-    <label>Category
-      <select name="categoryId">
-        <option value="">Select category</option>
-        <% categories.forEach(category => { %>
-          <option value="<%= category.id %>" <%= String(event?.category_id || '') === String(category.id) ? 'selected' : '' %>><%= category.name %></option>
-        <% }) %>
-      </select>
+
+    <label>
+      Краткое описание
+      <input type="text" name="shortDescription" value="<%= event?.short_description || '' %>" maxlength="255" required>
     </label>
-    <label>Location
-      <select name="locationId">
-        <option value="">Select location</option>
-        <% locations.forEach(location => { %>
-          <option value="<%= location.id %>" <%= String(event?.location_id || '') === String(location.id) ? 'selected' : '' %>><%= location.city %> — <%= location.name %></option>
-        <% }) %>
-      </select>
+
+    <label>
+      Полное описание
+      <textarea name="description"><%= event?.description || '' %></textarea>
     </label>
-    <label>Max participants<input type="number" name="maxParticipants" min="0" value="<%= event?.max_participants || 0 %>"></label>
-    <button type="submit"><%= event ? 'Save changes' : 'Create event' %></button>
+
+    <label>
+      Фото мероприятия
+      <input type="url" name="imageUrl" value="<%= event?.image_url || '' %>" placeholder="https://example.com/image.jpg">
+    </label>
+
+    <div class="form-grid">
+      <label>
+        Начало
+        <input type="datetime-local" name="startAt" value="<%= event ? new Date(event.start_at).toISOString().slice(0,16) : '' %>" required>
+      </label>
+
+      <label>
+        Окончание
+        <input type="datetime-local" name="endAt" value="<%= event ? new Date(event.end_at).toISOString().slice(0,16) : '' %>" required>
+      </label>
+    </div>
+
+    <div class="form-grid">
+      <label>
+        Категория
+        <select name="categoryId">
+          <option value="">Выберите категорию</option>
+          <% categories.forEach(category => { %>
+            <option value="<%= category.id %>" <%= String(event?.category_id || '') === String(category.id) ? 'selected' : '' %>><%= category.name %></option>
+          <% }) %>
+        </select>
+      </label>
+
+      <label>
+        Локация
+        <select name="locationId">
+          <option value="">Выберите локацию</option>
+          <% locations.forEach(location => { %>
+            <option value="<%= location.id %>" <%= String(event?.location_id || '') === String(location.id) ? 'selected' : '' %>><%= location.city %> - <%= location.address %></option>
+          <% }) %>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-grid">
+      <label>
+        Город
+        <select disabled>
+          <% cities.forEach(city => { %>
+            <option value="<%= city %>" <%= city === selectedCity ? 'selected' : '' %>><%= city %></option>
+          <% }) %>
+        </select>
+      </label>
+
+      <label>
+        Лимит участников
+        <input type="number" name="maxParticipants" min="0" value="<%= event?.max_participants || 0 %>">
+      </label>
+    </div>
+
+    <% if (isEdit) { %>
+      <label>
+        Статус
+        <select name="status">
+          <% ['draft', 'active', 'completed', 'cancelled'].forEach(status => { %>
+            <option value="<%= status %>" <%= event?.status === status ? 'selected' : '' %>><%= status %></option>
+          <% }) %>
+        </select>
+      </label>
+    <% } else { %>
+      <input type="hidden" name="status" value="active">
+    <% } %>
+
+    <button type="submit"><%= event ? 'Сохранить изменения' : 'Создать мероприятие' %></button>
   </form>
 </section>
 <%- include('../partials/footer') %>

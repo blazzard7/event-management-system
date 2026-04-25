@@ -1,48 +1,168 @@
 <%- include('../partials/header', { title, currentUser }) %>
-<section class="hero">
-  <h1>Upcoming events</h1>
-  <p>Clean MySQL edition with chat, notifications and scheduler.</p>
+<section class="hero hero-events">
+  <div>
+    <p class="eyebrow">Афиша города</p>
+    <h1>Мероприятия в <%= selectedCity %></h1>
+    <p>Выбирайте события, переходите в детали, регистрируйтесь и используйте QR-код или 6-значный код как приглашение.</p>
+  </div>
+  <div class="hero-actions">
+    <% if (currentUser) { %>
+      <a class="button-link primary" href="/events/new">Создать мероприятие</a>
+      <a class="button-link secondary" href="/my-events">Мои мероприятия</a>
+    <% } else { %>
+      <a class="button-link primary" href="/login">Войти, чтобы создавать события</a>
+    <% } %>
+  </div>
 </section>
-<div class="grid two-cols">
-  <section>
-    <h2>Events</h2>
-    <div class="cards">
-      <% events.forEach(event => { %>
-        <article class="card">
-          <h3><a href="/events/<%= event.id %>"><%= event.title %></a></h3>
-          <p><%= event.description || 'No description' %></p>
-          <p><strong>When:</strong> <%= new Date(event.start_at).toLocaleString() %></p>
-          <p><strong>Status:</strong> <%= event.status %></p>
-          <p><strong>Location:</strong> <%= event.location_name || 'Not set' %></p>
-          <p><strong>Registered:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
-        </article>
-      <% }) %>
+
+<section class="toolbar toolbar-home">
+  <div class="card toolbar-main">
+    <form method="get" action="/" class="filters-form filters-form--inline">
+      <label>
+        Город
+        <select name="city">
+          <% cities.forEach(city => { %>
+            <option value="<%= city %>" <%= city === selectedCity ? 'selected' : '' %>><%= city %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label class="filters-form__search">
+        Поиск мероприятия
+        <input type="text" name="q" value="<%= searchQuery %>" placeholder="Введите название мероприятия">
+      </label>
+      <input type="hidden" name="month" value="<%= selectedMonth %>">
+      <button type="submit">Найти</button>
+    </form>
+  </div>
+
+  <aside class="card invite-panel">
+    <div class="invite-panel__head">
+      <h2>Вход по приглашению</h2>
+      <p>Сканируйте QR-код или введите 6-значный код.</p>
     </div>
-  </section>
-  <aside>
-    <section class="card chat-box">
-      <h2>Live chat</h2>
-      <div id="chat-messages" class="chat-messages"></div>
-      <form id="chat-form">
-        <input id="chat-author" placeholder="Name" value="<%= currentUser ? currentUser.first_name + ' ' + currentUser.last_name : '' %>" />
-        <textarea id="chat-input" placeholder="Write a message"></textarea>
-        <button type="submit">Send</button>
-      </form>
-    </section>
-    <section class="card">
-      <h2>Categories</h2>
-      <ul>
-        <% categories.forEach(category => { %>
-          <li><%= category.name %></li>
+    <div class="scanner-box" id="qr-scanner-box" data-scan-url="/events/join">
+      <p class="scanner-box__title">Сканирование QR</p>
+      <video id="qr-scanner-video" playsinline muted></video>
+      <p id="qr-scanner-status">Нажмите кнопку, чтобы открыть камеру и считать приглашение.</p>
+      <button type="button" id="start-qr-scan">Сканировать QR</button>
+    </div>
+    <form method="get" action="/events/join" class="invite-code-form" id="invite-form">
+      <label>
+        Код приглашения
+        <input type="text" name="code" id="invite-code-input" placeholder="6 цифр" maxlength="6" pattern="\d{6}">
+      </label>
+      <button type="submit">Открыть мероприятие</button>
+    </form>
+  </aside>
+</section>
+
+<section class="content-grid">
+  <div class="events-column">
+    <div class="section-head">
+      <h2>Список мероприятий</h2>
+      <p>На странице показывается по 5 мероприятий.</p>
+    </div>
+
+    <div class="event-list">
+      <% if (events.length) { %>
+        <% events.forEach(event => { %>
+          <a class="event-card" href="/events/<%= event.id %>">
+            <div class="event-card__image-wrap">
+              <img
+                class="event-card__image"
+                src="<%= event.image_url || 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80' %>"
+                alt="<%= event.title %>"
+              >
+            </div>
+            <div class="event-card__body">
+              <div class="event-card__meta">
+                <span><%= new Date(event.start_at).toLocaleDateString('ru-RU') %></span>
+                <span><%= event.location_city || selectedCity %></span>
+              </div>
+              <h3><%= event.title %></h3>
+              <p><%= event.short_description %></p>
+              <ul class="event-card__details">
+                <li>Улица: <%= event.location_address || 'Адрес уточняется' %></li>
+                <li>Город: <%= event.location_city || selectedCity %></li>
+                <li>Дата: <%= new Date(event.start_at).toLocaleString('ru-RU') %></li>
+              </ul>
+            </div>
+          </a>
         <% }) %>
-      </ul>
-      <h2>Locations</h2>
-      <ul>
-        <% locations.forEach(location => { %>
-          <li><%= location.city %> — <%= location.name %></li>
+      <% } else { %>
+        <article class="card empty-state">
+          <h3>Мероприятий пока нет</h3>
+          <p>Попробуйте изменить поиск или создайте своё событие.</p>
+        </article>
+      <% } %>
+    </div>
+
+    <div class="pagination">
+      <% for (let pageNumber = 1; pageNumber <= pagination.totalPages; pageNumber += 1) { %>
+        <a
+          class="pagination__link <%= pageNumber === pagination.page ? 'is-active' : '' %>"
+          href="/?city=<%= encodeURIComponent(selectedCity) %>&q=<%= encodeURIComponent(searchQuery) %>&month=<%= selectedMonth %>&page=<%= pageNumber %>"
+        >
+          <%= pageNumber %>
+        </a>
+      <% } %>
+    </div>
+  </div>
+
+  <aside class="sidebar-column">
+    <section class="card calendar-card calendar-card--month">
+      <div class="calendar-card__top">
+        <div>
+          <h2>Календарь</h2>
+          <p><%= calendarMonth.monthLabel %></p>
+        </div>
+        <div class="calendar-nav">
+          <a
+            class="calendar-nav__button"
+            href="/?city=<%= encodeURIComponent(selectedCity) %>&q=<%= encodeURIComponent(searchQuery) %>&month=<%= calendarMonth.previousMonth %>&page=1"
+            aria-label="Предыдущий месяц"
+          >
+            ‹
+          </a>
+          <a
+            class="calendar-nav__button"
+            href="/?city=<%= encodeURIComponent(selectedCity) %>&q=<%= encodeURIComponent(searchQuery) %>&month=<%= calendarMonth.nextMonth %>&page=1"
+            aria-label="Следующий месяц"
+          >
+            ›
+          </a>
+        </div>
+      </div>
+
+      <div class="calendar-legend">
+        <span class="calendar-legend__item"><span class="calendar-dot calendar-dot--global"></span> Чужие мероприятия</span>
+        <span class="calendar-legend__item"><span class="calendar-dot calendar-dot--participant"></span> Я участник</span>
+        <span class="calendar-legend__item"><span class="calendar-dot calendar-dot--organizer">*</span> Я организатор</span>
+      </div>
+
+      <div class="month-grid">
+        <% calendarMonth.weekdayLabels.forEach(label => { %>
+          <div class="month-grid__weekday"><%= label %></div>
         <% }) %>
-      </ul>
+
+        <% calendarMonth.days.forEach(day => { %>
+          <div class="month-grid__cell <%= day.isCurrentMonth ? '' : 'is-outside' %>">
+            <% if (day.isCurrentMonth) { %>
+              <div class="month-grid__day-number"><%= day.day %></div>
+              <div class="month-grid__events">
+                <% day.events.forEach(event => { %>
+                  <a href="/events/<%= event.id %>" class="month-event month-event--<%= event.role %>">
+                    <% if (event.role === 'organizer') { %><span class="month-event__mark">*</span><% } %>
+                    <span class="month-event__title"><%= event.title %></span>
+                    <span class="month-event__time"><%= new Date(event.startAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) %></span>
+                  </a>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
     </section>
   </aside>
-</div>
+</section>
 <%- include('../partials/footer') %>

@@ -15,4 +15,21 @@ async function getRecentMessages(limit = config.chat.historyLimit) {
   return rows.reverse();
 }
 
+async function getMessagesByEvent(eventId) {
+    const [rows] = await pool.query(
+        'SELECT * FROM chat_messages WHERE event_id = ? ORDER BY created_at ASC',
+        [eventId]
+    );
+    return rows;
+}
+
+async function saveMessage(eventId, userId, message) {
+    const [result] = await pool.query(
+        'INSERT INTO chat_messages (event_id, user_id, message) VALUES (?, ?, ?)',
+        [eventId, userId, message]
+    );
+
+    return result.insertId;
+}
+
 module.exports = { saveMessage, getRecentMessages };

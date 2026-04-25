@@ -3,7 +3,9 @@ const AppError = require('../lib/AppError');
 function validateEventPayload(payload, isUpdate = false) {
   const data = {
     title: String(payload.title || '').trim(),
+    shortDescription: String(payload.shortDescription || payload.short_description || '').trim(),
     description: String(payload.description || '').trim(),
+    imageUrl: String(payload.imageUrl || payload.image_url || '').trim(),
     startAt: payload.startAt || payload.start_at,
     endAt: payload.endAt || payload.end_at,
     status: payload.status || 'active',
@@ -14,6 +16,9 @@ function validateEventPayload(payload, isUpdate = false) {
 
   if (!data.title || !data.startAt || !data.endAt) {
     throw new AppError('Title, start time and end time are required', 400);
+  }
+  if (!data.shortDescription) {
+    throw new AppError('Short description is required', 400);
   }
   if (Number.isNaN(data.maxParticipants) || data.maxParticipants < 0) {
     throw new AppError('maxParticipants must be a non-negative number', 400);

@@ -1,0 +1,46 @@
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="section-head my-events-head">
+  <div>
+    <h1>Мои мероприятия</h1>
+    <p>Здесь собраны события, которые вы создали сами или на которые уже зарегистрировались.</p>
+  </div>
+  <a class="button-link primary" href="/events/new">Создать новое мероприятие</a>
+</section>
+
+<section class="event-list">
+  <% if (events.length) { %>
+    <% events.forEach(event => { %>
+      <article class="event-card event-card--compact">
+        <a class="event-card__image-wrap" href="/events/<%= event.id %>">
+          <img
+            class="event-card__image"
+            src="<%= event.image_url || 'https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=900&q=80' %>"
+            alt="<%= event.title %>"
+          >
+        </a>
+        <div class="event-card__body">
+          <div class="role-badges">
+            <% if (event.user_role === 'organizer') { %>
+              <span class="role-badge role-badge--organizer">Организатор</span>
+            <% } else { %>
+              <span class="role-badge role-badge--participant">Участник</span>
+            <% } %>
+          </div>
+          <h2><a href="/events/<%= event.id %>"><%= event.title %></a></h2>
+          <p><%= event.short_description %></p>
+          <ul class="event-card__details">
+            <li>Дата: <%= new Date(event.start_at).toLocaleString('ru-RU') %></li>
+            <li>Город: <%= event.location_city || 'Не указан' %></li>
+            <li>Адрес: <%= event.location_address || 'Уточняется' %></li>
+          </ul>
+        </div>
+      </article>
+    <% }) %>
+  <% } else { %>
+    <article class="card empty-state">
+      <h2>Список пока пуст</h2>
+      <p>Создайте первое мероприятие или зарегистрируйтесь на интересующее событие.</p>
+    </article>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

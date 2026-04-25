@@ -1,0 +1,58 @@
+<%- include('../partials/header', { title, currentUser }) %>
+
+<section class="hero">
+  <h1>Admin panel</h1>
+  <p>Manage user roles.</p>
+</section>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<% if (success) { %>
+  <div class="alert alert-success"><%= success %></div>
+<% } %>
+
+<section class="card">
+  <h2>Users</h2>
+
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Current role</th>
+          <th>Change role</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.first_name %> <%= user.last_name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.role %></td>
+            <td>
+              <form action="/admin/users/<%= user.id %>/role" method="post" class="role-form">
+                <select name="role">
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role %>" <%= user.role === role ? 'selected' : '' %>>
+                      <%= role %>
+                    </option>
+                  <% }) %>
+                </select>
+
+                <button type="submit">Save</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

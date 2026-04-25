@@ -17,4 +17,23 @@ async function postMessage({ userId, authorName, message }) {
   });
 }
 
+async function sendMessage(eventId, userId, text) {
+
+    if (!text || text.trim() === '') {
+        throw new Error("Сообщение пустое");
+    }
+
+    const messageId = await chatRepository.saveMessage(
+        eventId,
+        userId,
+        text
+    );
+
+    return {
+        id: messageId,
+        eventId,
+        userId,
+        message: text
+    };
+}
 module.exports = { getHistory, postMessage };

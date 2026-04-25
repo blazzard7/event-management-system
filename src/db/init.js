@@ -29,7 +29,9 @@ const schemaStatements = [
   `CREATE TABLE IF NOT EXISTS events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
+    short_description VARCHAR(255) NOT NULL DEFAULT '',
     description TEXT,
+    image_url VARCHAR(500) NULL,
     start_at DATETIME NOT NULL,
     end_at DATETIME NOT NULL,
     status ENUM('draft','active','completed','cancelled') NOT NULL DEFAULT 'active',
@@ -37,8 +39,10 @@ const schemaStatements = [
     category_id INT NULL,
     location_id INT NULL,
     max_participants INT NOT NULL DEFAULT 0,
+    invitation_code CHAR(6) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_events_invitation_code (invitation_code),
     CONSTRAINT fk_events_organizer FOREIGN KEY (organizer_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_events_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
     CONSTRAINT fk_events_location FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE SET NULL
@@ -72,12 +76,11 @@ const schemaStatements = [
   )`,
   `CREATE TABLE IF NOT EXISTS chat_messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NULL,
-    author_name VARCHAR(120) NOT NULL,
+    event_id INT NOT NULL,
+    user_id INT NOT NULL,
     message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_chat_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-  )`
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);`
 ];
 
 async function seedDefaults() {
@@ -90,7 +93,15 @@ async function seedDefaults() {
   if (!locationCount) {
     await appPool.query(
       'INSERT INTO locations (name, address, city, capacity) VALUES (?, ?, ?, ?), (?, ?, ?, ?)',
-      ['Main Hall', 'Central St. 1', 'Amsterdam', 120, 'Conference Room', 'North Ave. 5', 'Amsterdam', 40]
+      ['Главный зал', 'ул. Ленина, 1', 'Екатеринбург', 120, 'Конференц-зал', 'ул. Малышева, 5', 'Екатеринбург', 40]
+    );
+  }
+
+  const [[{ ekbCount }]] = await appPool.query('SELECT COUNT(*) AS ekbCount FROM locations WHERE city = ?', ['Екатеринбург']);
+  if (!ekbCount) {
+    await appPool.query(
+      'INSERT INTO locations (name, address, city, capacity) VALUES (?, ?, ?, ?), (?, ?, ?, ?)',
+      ['Главный зал', 'ул. Ленина, 1', 'Екатеринбург', 120, 'Конференц-зал', 'ул. Малышева, 5', 'Екатеринбург', 40]
     );
   }
 
@@ -104,11 +115,61 @@ async function seedDefaults() {
   }
 }
 
+async function ensureColumn(tableName, columnName, definition) {
+  const [rows] = await appPool.query(
+    `SELECT COUNT(*) AS count
+     FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+    [tableName, columnName]
+  );
+
+  if (!rows[0]?.count) {
+    await appPool.query(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition}`);
+  }
+}
+
+async function ensureIndex(tableName, indexName, statement) {
+  const [rows] = await appPool.query(
+    `SELECT COUNT(*) AS count
+     FROM information_schema.STATISTICS
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?`,
+    [tableName, indexName]
+  );
+
+  if (!rows[0]?.count) {
+    await appPool.query(statement);
+  }
+}
+
+async function backfillInvitationCodes() {
+  const [events] = await appPool.query('SELECT id FROM events WHERE invitation_code IS NULL OR invitation_code = ""');
+  for (const event of events) {
+    let code;
+    let exists = true;
+
+    while (exists) {
+      code = String(Math.floor(100000 + Math.random() * 900000));
+      const [rows] = await appPool.query('SELECT id FROM events WHERE invitation_code = ?', [code]);
+      exists = Boolean(rows.length);
+    }
+
+    await appPool.query('UPDATE events SET invitation_code = ? WHERE id = ?', [code, event.id]);
+  }
+}
+
 async function initializeDatabase() {
   await adminPool.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
   for (const statement of schemaStatements) {
     await appPool.query(statement);
   }
+  await ensureColumn('events', 'short_description', "VARCHAR(255) NOT NULL DEFAULT '' AFTER title");
+  await ensureColumn('events', 'image_url', 'VARCHAR(500) NULL AFTER description');
+  await ensureColumn('events', 'invitation_code', "CHAR(6) NULL AFTER max_participants");
+  await backfillInvitationCodes();
+  await appPool.query(
+    "ALTER TABLE events MODIFY invitation_code CHAR(6) NOT NULL"
+  );
+  await ensureIndex('events', 'uq_events_invitation_code', 'ALTER TABLE events ADD UNIQUE KEY uq_events_invitation_code (invitation_code)');
   await seedDefaults();
   logger.info('Database initialized');
 }

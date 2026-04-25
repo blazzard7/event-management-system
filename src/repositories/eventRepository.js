@@ -1,6 +1,6 @@
 const { appPool } = require('../db/pool');
 
-const eventSelect = `
+const eventSelectFields = `
   SELECT e.*,
          CONCAT(u.first_name, ' ', u.last_name) AS organizer_name,
          c.name AS category_name,
@@ -8,6 +8,9 @@ const eventSelect = `
          l.address AS location_address,
          l.city AS location_city,
          COALESCE(rc.registration_count, 0) AS registration_count
+`;
+
+const eventSelectFrom = `
   FROM events e
   JOIN users u ON u.id = e.organizer_id
   LEFT JOIN categories c ON c.id = e.category_id
@@ -19,31 +22,166 @@ const eventSelect = `
   ) rc ON rc.event_id = e.id
 `;
 
-async function listEvents() {
-  const [rows] = await appPool.query(`${eventSelect} ORDER BY e.start_at ASC`);
+function normalizePage(page) {
+  const parsed = Number(page);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 1;
+}
+
+async function listEvents({ city, query, page = 1, limit = 5 } = {}) {
+  const params = [];
+  const filters = [];
+
+  if (city) {
+    filters.push('COALESCE(l.city, ?) = ?');
+    params.push(city, city);
+  }
+
+  if (query) {
+    filters.push('e.title LIKE ?');
+    params.push(`%${query}%`);
+  }
+
+  const whereClause = filters.length ? ` WHERE ${filters.join(' AND ')}` : '';
+
+  const [countRows] = await appPool.query(
+    `SELECT COUNT(*) AS total
+     FROM events e
+     LEFT JOIN locations l ON l.id = e.location_id${whereClause}`,
+    params
+  );
+
+  const currentPage = normalizePage(page);
+  const safeLimit = Number(limit) > 0 ? Number(limit) : 5;
+  const total = Number(countRows[0]?.total || 0);
+  const totalPages = Math.max(1, Math.ceil(total / safeLimit));
+  const offset = (Math.min(currentPage, totalPages) - 1) * safeLimit;
+
+  const [rows] = await appPool.query(
+    `${eventSelectFields}${eventSelectFrom}${whereClause} ORDER BY e.start_at ASC LIMIT ? OFFSET ?`,
+    [...params, safeLimit, offset]
+  );
+
+  return {
+    events: rows,
+    pagination: {
+      page: Math.min(currentPage, totalPages),
+      limit: safeLimit,
+      total,
+      totalPages
+    }
+  };
+}
+
+async function listCalendarEvents({ city, month, userId } = {}) {
+  const params = [];
+  const filters = [];
+
+  if (city) {
+    filters.push('COALESCE(l.city, ?) = ?');
+    params.push(city, city);
+  }
+
+  if (month) {
+    filters.push('DATE_FORMAT(e.start_at, "%Y-%m") = ?');
+    params.push(month);
+  }
+
+  const whereClause = filters.length ? ` WHERE ${filters.join(' AND ')}` : '';
+  const userJoin = userId ? ' LEFT JOIN registrations ur ON ur.event_id = e.id AND ur.user_id = ?' : '';
+  const userSelect = userId ? ', CASE WHEN ur.id IS NULL THEN 0 ELSE 1 END AS is_registered_for_current_user' : ', 0 AS is_registered_for_current_user';
+  const queryParams = userId ? [userId, ...params] : params;
+  const [rows] = await appPool.query(
+    `${eventSelectFields}${userSelect}${eventSelectFrom}${userJoin}${whereClause} ORDER BY e.start_at ASC`,
+    queryParams
+  );
   return rows;
 }
 
 async function getEventById(id) {
-  const [rows] = await appPool.query(`${eventSelect} WHERE e.id = ?`, [id]);
+  const [rows] = await appPool.query(`${eventSelectFields}${eventSelectFrom} WHERE e.id = ?`, [id]);
   return rows[0] || null;
 }
 
-async function createEvent({ title, description, startAt, endAt, organizerId, categoryId, locationId, maxParticipants }) {
+async function getEventByInvitationCode(code) {
+  const [rows] = await appPool.query(`${eventSelectFields}${eventSelectFrom} WHERE e.invitation_code = ?`, [code]);
+  return rows[0] || null;
+}
+
+async function createEvent({
+  title,
+  shortDescription,
+  description,
+  imageUrl,
+  startAt,
+  endAt,
+  organizerId,
+  categoryId,
+  locationId,
+  maxParticipants,
+  invitationCode
+}) {
   const [result] = await appPool.query(
-    `INSERT INTO events (title, description, start_at, end_at, organizer_id, category_id, location_id, max_participants)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [title, description, startAt, endAt, organizerId, categoryId || null, locationId || null, maxParticipants || 0]
+    `INSERT INTO events (
+      title,
+      short_description,
+      description,
+      image_url,
+      start_at,
+      end_at,
+      organizer_id,
+      category_id,
+      location_id,
+      max_participants,
+      invitation_code
+    )
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      title,
+      shortDescription,
+      description,
+      imageUrl || null,
+      startAt,
+      endAt,
+      organizerId,
+      categoryId || null,
+      locationId || null,
+      maxParticipants || 0,
+      invitationCode
+    ]
   );
   return getEventById(result.insertId);
 }
 
-async function updateEvent(id, { title, description, startAt, endAt, status, categoryId, locationId, maxParticipants }) {
+async function updateEvent(
+  id,
+  { title, shortDescription, description, imageUrl, startAt, endAt, status, categoryId, locationId, maxParticipants }
+) {
   await appPool.query(
     `UPDATE events
-     SET title = ?, description = ?, start_at = ?, end_at = ?, status = ?, category_id = ?, location_id = ?, max_participants = ?
+     SET title = ?,
+         short_description = ?,
+         description = ?,
+         image_url = ?,
+         start_at = ?,
+         end_at = ?,
+         status = ?,
+         category_id = ?,
+         location_id = ?,
+         max_participants = ?
      WHERE id = ?`,
-    [title, description, startAt, endAt, status, categoryId || null, locationId || null, maxParticipants || 0, id]
+    [
+      title,
+      shortDescription,
+      description,
+      imageUrl || null,
+      startAt,
+      endAt,
+      status,
+      categoryId || null,
+      locationId || null,
+      maxParticipants || 0,
+      id
+    ]
   );
   return getEventById(id);
 }
@@ -57,9 +195,23 @@ async function listCategories() {
   return rows;
 }
 
-async function listLocations() {
+async function listLocations({ city } = {}) {
+  if (city) {
+    const [rows] = await appPool.query('SELECT * FROM locations WHERE city = ? ORDER BY city, name', [city]);
+    return rows;
+  }
   const [rows] = await appPool.query('SELECT * FROM locations ORDER BY city, name');
   return rows;
+}
+
+async function listCities() {
+  const [rows] = await appPool.query(
+    `SELECT DISTINCT city
+     FROM locations
+     WHERE city IS NOT NULL AND city <> ''
+     ORDER BY city`
+  );
+  return rows.map((row) => row.city);
 }
 
 async function createRegistration(userId, eventId) {
@@ -83,6 +235,18 @@ async function listRegistrationsForEvent(eventId) {
      WHERE r.event_id = ?
      ORDER BY r.created_at ASC`,
     [eventId]
+  );
+  return rows;
+}
+
+async function listEventsForUser(userId) {
+  const [rows] = await appPool.query(
+    `${eventSelectFields}
+     ${eventSelectFrom}
+     LEFT JOIN registrations ur ON ur.event_id = e.id AND ur.user_id = ?
+     WHERE e.organizer_id = ? OR ur.user_id = ?
+     ORDER BY e.start_at ASC`,
+    [userId, userId, userId]
   );
   return rows;
 }
@@ -130,16 +294,20 @@ async function listUpcomingEventsWithinHours(hours) {
 
 module.exports = {
   listEvents,
+  listCalendarEvents,
   getEventById,
+  getEventByInvitationCode,
   createEvent,
   updateEvent,
   deleteEvent,
   listCategories,
   listLocations,
+  listCities,
   createRegistration,
   deleteRegistration,
   registrationExists,
   listRegistrationsForEvent,
+  listEventsForUser,
   addComment,
   listComments,
   markCompletedEvents,

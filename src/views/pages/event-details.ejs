@@ -1,48 +1,97 @@
 <%- include('../partials/header', { title, currentUser }) %>
-<section class="card">
-  <h1><%= event.title %></h1>
-  <p><%= event.description || 'No description' %></p>
-  <p><strong>Organizer:</strong> <%= event.organizer_name %></p>
-  <p><strong>Category:</strong> <%= event.category_name || 'Not set' %></p>
-  <p><strong>Location:</strong> <%= event.location_name || 'Not set' %><% if (event.location_address) { %>, <%= event.location_address %>, <%= event.location_city %><% } %></p>
-  <p><strong>Time:</strong> <%= new Date(event.start_at).toLocaleString() %> — <%= new Date(event.end_at).toLocaleString() %></p>
-  <p><strong>Status:</strong> <%= event.status %></p>
-  <p><strong>Participants:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
+<section class="detail-hero">
+  <div class="detail-hero__content card">
+    <div class="detail-hero__image-wrap">
+      <img
+        class="detail-hero__image"
+        src="<%= event.image_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80' %>"
+        alt="<%= event.title %>"
+      >
+    </div>
+    <div class="detail-hero__info">
+      <div class="role-badges">
+        <span class="status-badge"><%= event.status %></span>
+        <% if (userRole === 'organizer') { %>
+          <span class="role-badge role-badge--organizer">Вы организатор</span>
+        <% } %>
+        <% if (userRole === 'participant') { %>
+          <span class="role-badge role-badge--participant">Вы участник</span>
+        <% } %>
+      </div>
+      <h1><%= event.title %></h1>
+      <p class="lead"><%= event.short_description %></p>
+      <p><%= event.description || 'Подробное описание скоро появится.' %></p>
+      <div class="detail-meta">
+        <p><strong>Организатор:</strong> <%= event.organizer_name %></p>
+        <p><strong>Категория:</strong> <%= event.category_name || 'Не указана' %></p>
+        <p><strong>Адрес:</strong> <%= event.location_address || 'Адрес уточняется' %>, <%= event.location_city || 'Город не указан' %></p>
+        <p><strong>Дата:</strong> <%= new Date(event.start_at).toLocaleString('ru-RU') %> - <%= new Date(event.end_at).toLocaleString('ru-RU') %></p>
+        <p><strong>Участники:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
+      </div>
 
-  <% if (currentUser) { %>
-    <div class="actions">
-      <form method="post" action="/events/<%= event.id %>/register"><button type="submit">Register</button></form>
-      <form method="post" action="/events/<%= event.id %>/unregister"><button type="submit">Cancel registration</button></form>
-      <% if (currentUser.role === 'admin') { %>
-        <a class="button-link" href="/admin/events/<%= event.id %>/edit">Edit</a>
-        <form method="post" action="/admin/events/<%= event.id %>/delete"><button type="submit">Delete</button></form>
+      <% if (currentUser) { %>
+        <div class="actions">
+          <% if (userRole !== 'organizer' && !isRegistered) { %>
+            <form method="post" action="/events/<%= event.id %>/register"><button type="submit">Записаться</button></form>
+          <% } %>
+          <% if (isRegistered) { %>
+            <form method="post" action="/events/<%= event.id %>/unregister"><button type="submit" class="secondary-btn">Отменить запись</button></form>
+          <% } %>
+          <% if (canManage) { %>
+            <a class="button-link secondary" href="/events/<%= event.id %>/edit">Редактировать</a>
+            <form method="post" action="/events/<%= event.id %>/delete"><button type="submit" class="danger-btn">Удалить</button></form>
+          <% } %>
+        </div>
+      <% } else { %>
+        <a class="button-link primary" href="/login">Войдите, чтобы записаться</a>
       <% } %>
     </div>
-  <% } %>
+  </div>
+
+  <aside class="card invite-card">
+    <h2>Приглашение</h2>
+    <img class="invite-card__qr" src="<%= qrCodeDataUrl %>" alt="QR код мероприятия">
+    <p><strong>QR-код:</strong> можно сканировать с главной страницы.</p>
+    <p><strong>6-значный код:</strong> <span class="invite-code"><%= invitationCode %></span></p>
+    <p><strong>Ссылка:</strong> <a href="<%= invitationUrl %>"><%= invitationUrl %></a></p>
+  </aside>
 </section>
 
-<section class="grid two-cols">
+<section class="grid two-cols details-grid">
   <article class="card">
-    <h2>Registrations</h2>
-    <ul>
-      <% registrations.forEach(registration => { %>
-        <li><%= registration.first_name %> <%= registration.last_name %> — <%= registration.email %></li>
-      <% }) %>
-    </ul>
+    <h2>Список участников</h2>
+    <% if (registrations.length) { %>
+      <ul class="plain-list">
+        <% registrations.forEach(registration => { %>
+          <li><%= registration.first_name %> <%= registration.last_name %> - <%= registration.email %></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>Пока никто не зарегистрировался.</p>
+    <% } %>
   </article>
+
   <article class="card">
-    <h2>Comments</h2>
+    <h2>Комментарии</h2>
     <% if (currentUser) { %>
-      <form method="post" action="/events/<%= event.id %>/comments">
-        <textarea name="body" placeholder="Write comment"></textarea>
-        <button type="submit">Add comment</button>
+      <form method="post" action="/events/<%= event.id %>/comments" class="comment-form">
+        <textarea name="body" placeholder="Напишите комментарий"></textarea>
+        <button type="submit">Отправить</button>
       </form>
     <% } %>
-    <ul>
-      <% comments.forEach(comment => { %>
-        <li><strong><%= comment.first_name %> <%= comment.last_name %>:</strong> <%= comment.body %></li>
-      <% }) %>
-    </ul>
+
+    <% if (comments.length) { %>
+      <ul class="plain-list comments-list">
+        <% comments.forEach(comment => { %>
+          <li>
+            <strong><%= comment.first_name %> <%= comment.last_name %></strong>
+            <p><%= comment.body %></p>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>Комментариев пока нет.</p>
+    <% } %>
   </article>
 </section>
 <%- include('../partials/footer') %>
