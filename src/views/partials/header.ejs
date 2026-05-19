@@ -15,8 +15,8 @@
         <% if (currentUser) { %>
           <a href="/my-events" class="<%= currentPath === '/my-events' ? 'is-active' : '' %>">Мои мероприятия</a>
           <a href="/events/new" class="<%= currentPath === '/events/new' ? 'is-active' : '' %>">Создать мероприятие</a>
-          <a href="/notifications" class="<%= /^\\/notifications/.test(currentPath) ? 'is-active' : '' %>">Уведомления</a>
-          <a href="/profile" class="<%= /^\\/profile/.test(currentPath) ? 'is-active' : '' %>">Профиль</a>
+          <a href="/notifications" class="<%= currentPath.indexOf('/notifications') === 0 ? 'is-active' : '' %>">Уведомления</a>
+          <a href="/profile" class="<%= currentPath.indexOf('/profile') === 0 ? 'is-active' : '' %>">Профиль</a>
           <% if (currentUser.role === 'admin') { %>
             <a href="/admin/users" class="<%= currentPath === '/admin/users' ? 'is-active' : '' %>">Пользователи</a>
             <a href="/admin/categories" class="<%= currentPath === '/admin/categories' ? 'is-active' : '' %>">Категории</a>
