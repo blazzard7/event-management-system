@@ -1,4 +1,5 @@
 <%- include('../partials/header', { title, currentUser }) %>
+<p class="breadcrumbs"><a href="/">← К списку мероприятий</a></p>
 <section class="detail-hero">
   <div class="detail-hero__content card">
     <div class="detail-hero__image-wrap">
@@ -27,6 +28,13 @@
         <p><strong>Адрес:</strong> <%= event.location_address || 'Адрес уточняется' %>, <%= event.location_city || 'Город не указан' %></p>
         <p><strong>Дата:</strong> <%= new Date(event.start_at).toLocaleString('ru-RU') %> - <%= new Date(event.end_at).toLocaleString('ru-RU') %></p>
         <p><strong>Участники:</strong> <%= event.registration_count %><% if (event.max_participants) { %> / <%= event.max_participants %><% } %></p>
+        <% if (event.max_participants > 0) { %>
+          <% var pct = Math.min(100, Math.round(event.registration_count / event.max_participants * 100)); %>
+          <div class="progress-bar">
+            <div class="progress-bar__fill" style="width:<%= pct %>%"></div>
+            <span class="progress-bar__label"><%= pct %>%</span>
+          </div>
+        <% } %>
       </div>
 
       <% if (currentUser) { %>

@@ -1,17 +1,27 @@
 <%- include('../partials/header', { title, currentUser }) %>
 <section class="card">
-  <h1>Notifications</h1>
-  <ul>
+  <div class="section-head">
+    <h1>Уведомления</h1>
+    <% if (notifications.some(function(n) { return !n.is_read; })) { %>
+      <form method="post" action="/notifications/read-all">
+        <button type="submit" class="secondary-btn">Отметить все как прочитанные</button>
+      </form>
+    <% } %>
+  </div>
+  <ul class="plain-list">
     <% notifications.forEach(notification => { %>
-      <li>
+      <li class="<%= notification.is_read ? 'notification--read' : 'notification--unread' %>">
         <strong><%= notification.title %></strong> — <%= notification.message %>
         <% if (!notification.is_read) { %>
           <form method="post" action="/notifications/<%= notification.id %>/read" class="inline-form">
-            <button type="submit">Mark as read</button>
+            <button type="submit">Прочитано</button>
           </form>
         <% } %>
       </li>
     <% }) %>
+    <% if (!notifications.length) { %>
+      <p>Уведомлений пока нет.</p>
+    <% } %>
   </ul>
 </section>
 <%- include('../partials/footer') %>

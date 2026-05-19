@@ -3,6 +3,7 @@ const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const flash = require('connect-flash');
 const config = require('./config');
 const { swaggerUi, specs } = require('./config/swagger');
 const { attachCurrentUser } = require('./middleware/auth');
@@ -33,6 +34,16 @@ function createApp() {
       maxAge: 1000 * 60 * 60 * 24
     }
   }));
+  app.use(flash());
+  app.use((req, res, next) => {
+    res.locals.currentPath = req.path;
+    res.locals.flashMessages = [
+      ...req.flash('success').map(function (m) { return { text: m, type: 'success' }; }),
+      ...req.flash('error').map(function (m) { return { text: m, type: 'error' }; }),
+      ...req.flash('info').map(function (m) { return { text: m, type: 'info' }; })
+    ];
+    next();
+  });
   app.use(requestLogger);
   app.use(attachCurrentUser);
   app.use(express.static(path.join(__dirname, 'public')));

@@ -126,6 +126,13 @@
           </a>
           <a
             class="calendar-nav__button"
+            href="/?city=<%= encodeURIComponent(selectedCity) %>&q=<%= encodeURIComponent(searchQuery) %>&month=<%= new Date().toISOString().slice(0, 7) %>&page=1"
+            aria-label="Сегодня"
+          >
+            Сегодня
+          </a>
+          <a
+            class="calendar-nav__button"
             href="/?city=<%= encodeURIComponent(selectedCity) %>&q=<%= encodeURIComponent(searchQuery) %>&month=<%= calendarMonth.nextMonth %>&page=1"
             aria-label="Следующий месяц"
           >

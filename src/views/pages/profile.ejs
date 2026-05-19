@@ -4,5 +4,7 @@
   <p><strong>Name:</strong> <%= currentUser.first_name %> <%= currentUser.last_name %></p>
   <p><strong>Email:</strong> <%= currentUser.email %></p>
   <p><strong>Role:</strong> <%= currentUser.role %></p>
+  <p><strong>Email-уведомления:</strong> <%= currentUser.email_notifications ? 'Включены' : 'Отключены' %></p>
+  <a class="button-link secondary" href="/profile/edit">Редактировать профиль</a>
 </section>
 <%- include('../partials/footer') %>

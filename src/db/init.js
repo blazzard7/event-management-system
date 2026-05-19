@@ -78,9 +78,29 @@ const schemaStatements = [
     id INT AUTO_INCREMENT PRIMARY KEY,
     event_id INT NOT NULL,
     user_id INT NOT NULL,
+    author_name VARCHAR(100) NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);`
+);`,
+  `CREATE TABLE IF NOT EXISTS password_resets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(64) NOT NULL,
+    expires_at DATETIME NOT NULL,
+    used TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_password_resets_token (token),
+    CONSTRAINT fk_password_resets_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )`,
+  `CREATE TABLE IF NOT EXISTS email_notification_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NULL,
+    type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_email_log (user_id, event_id, type),
+    CONSTRAINT fk_email_log_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  )`
 ];
 
 async function seedDefaults() {
@@ -170,6 +190,7 @@ async function initializeDatabase() {
     "ALTER TABLE events MODIFY invitation_code CHAR(6) NOT NULL"
   );
   await ensureIndex('events', 'uq_events_invitation_code', 'ALTER TABLE events ADD UNIQUE KEY uq_events_invitation_code (invitation_code)');
+  await ensureColumn('users', 'email_notifications', "TINYINT(1) NOT NULL DEFAULT 0 AFTER role");
   await seedDefaults();
   logger.info('Database initialized');
 }

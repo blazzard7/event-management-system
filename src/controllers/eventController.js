@@ -59,40 +59,48 @@ async function showEditForm(req, res) {
 
 async function createWeb(req, res) {
   await eventService.createEvent({ ...req.body, organizerId: req.currentUser.id });
+  req.flash('success', 'Мероприятие создано');
   res.redirect('/my-events');
 }
 
 async function updateWeb(req, res) {
   await eventService.updateEvent(Number(req.params.id), req.body, req.currentUser);
+  req.flash('success', 'Мероприятие обновлено');
   res.redirect(`/events/${req.params.id}`);
 }
 
 async function deleteWeb(req, res) {
   await eventService.deleteEvent(Number(req.params.id), req.currentUser);
+  req.flash('success', 'Мероприятие удалено');
   res.redirect('/my-events');
 }
 
 async function registerWeb(req, res) {
   await eventService.registerForEvent(req.currentUser.id, Number(req.params.id));
+  req.flash('success', 'Вы записаны на мероприятие');
   res.redirect(`/events/${req.params.id}`);
 }
 
 async function unregisterWeb(req, res) {
   await eventService.cancelRegistration(req.currentUser.id, Number(req.params.id));
+  req.flash('info', 'Запись отменена');
   res.redirect(`/events/${req.params.id}`);
 }
 
 async function addCommentWeb(req, res) {
   await eventService.addComment(req.currentUser.id, Number(req.params.id), req.body.body);
+  req.flash('success', 'Комментарий добавлен');
   res.redirect(`/events/${req.params.id}`);
 }
 
 async function myEvents(req, res) {
-  const events = await eventService.getMyEvents(req.currentUser.id);
+  const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
+  const events = await eventService.getMyEvents(req.currentUser.id, sortOrder);
   res.render('pages/my-events', {
     title: 'Мои мероприятия',
     currentUser: req.currentUser,
-    events
+    events,
+    currentSort: sortOrder
   });
 }
 

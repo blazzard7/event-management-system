@@ -19,4 +19,46 @@ router.post(
   asyncHandler(adminController.updateUserRole)
 );
 
+router.get(
+  '/admin/categories',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.categoriesPage)
+);
+
+router.post(
+  '/admin/categories',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.createCategory)
+);
+
+router.post(
+  '/admin/categories/:id/delete',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.deleteCategory)
+);
+
+router.get(
+  '/admin/locations',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.locationsPage)
+);
+
+router.post(
+  '/admin/locations',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.createLocation)
+);
+
+router.post(
+  '/admin/locations/:id/delete',
+  requireAuth,
+  requireAdmin,
+  asyncHandler(adminController.deleteLocation)
+);
+
 module.exports = router;

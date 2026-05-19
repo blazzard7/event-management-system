@@ -1,12 +1,16 @@
 <%- include('../partials/header', { title, currentUser }) %>
 <section class="form-card">
-  <h1>Register</h1>
+  <h1>Регистрация</h1>
   <form method="post" action="/register">
-    <label>First name<input type="text" name="firstName" required></label>
-    <label>Last name<input type="text" name="lastName" required></label>
+    <label>Имя<input type="text" name="firstName" required></label>
+    <label>Фамилия<input type="text" name="lastName" required></label>
     <label>Email<input type="email" name="email" required></label>
-    <label>Password<input type="password" name="password" required></label>
-    <button type="submit">Create account</button>
+    <label>Пароль<input type="password" name="password" required></label>
+    <label class="checkbox-label">
+      <input type="checkbox" name="emailNotifications" checked>
+      Получать уведомления о мероприятиях по email
+    </label>
+    <button type="submit">Создать аккаунт</button>
   </form>
 </section>
 <%- include('../partials/footer') %>

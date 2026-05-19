@@ -2,6 +2,8 @@ const QRCode = require('qrcode');
 const AppError = require('../lib/AppError');
 const eventRepository = require('../repositories/eventRepository');
 const notificationRepository = require('../repositories/notificationRepository');
+const userRepository = require('../repositories/userRepository');
+const emailService = require('./emailService');
 const { validateEventPayload, validateComment } = require('../validators/eventValidator');
 
 const DEFAULT_CITY = 'Екатеринбург';
@@ -228,6 +230,17 @@ async function registerForEvent(userId, eventId) {
     title: 'Registration confirmed',
     message: `You are registered for "${event.title}".`
   });
+
+  const user = await userRepository.findById(userId);
+  if (user && user.email_notifications) {
+    emailService.sendEmail({
+      to: user.email,
+      subject: `Регистрация на "${event.title}"`,
+      text: `Вы зарегистрированы на мероприятие "${event.title}".\n\nДата: ${event.start_at}\nМесто: ${event.location_address || 'уточняется'}\n\nКод приглашения: ${event.invitation_code}`
+    }).catch(function (err) {
+      // silent fail
+    });
+  }
 }
 
 async function cancelRegistration(userId, eventId) {
@@ -239,8 +252,8 @@ async function addComment(userId, eventId, body) {
   return eventRepository.addComment({ userId, eventId, body: validateComment(body) });
 }
 
-async function getMyEvents(userId) {
-  const events = await eventRepository.listEventsForUser(userId);
+async function getMyEvents(userId, sortOrder) {
+  const events = await eventRepository.listEventsForUser(userId, sortOrder);
   return mapMyEvents(events, userId);
 }
 

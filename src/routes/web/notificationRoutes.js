@@ -6,5 +6,6 @@ const { requireAuth } = require('../../middleware/auth');
 const router = express.Router();
 router.get('/notifications', requireAuth, asyncHandler(notificationController.listWeb));
 router.post('/notifications/:id/read', requireAuth, asyncHandler(notificationController.markReadWeb));
+router.post('/notifications/read-all', requireAuth, asyncHandler(notificationController.markAllReadWeb));
 
 module.exports = router;

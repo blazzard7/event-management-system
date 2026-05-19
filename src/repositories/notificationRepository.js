@@ -20,12 +20,32 @@ async function markRead(notificationId, userId) {
   await appPool.query('UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?', [notificationId, userId]);
 }
 
+async function markAllRead(userId) {
+  await appPool.query('UPDATE notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0', [userId]);
+}
+
 async function hasDuplicateReminder(userId, eventId) {
   const [rows] = await appPool.query(
     'SELECT id FROM notifications WHERE user_id = ? AND title = ? AND message LIKE ? LIMIT 1',
-    [userId, 'Event reminder', `%Event #${eventId}%`]
+    [userId, 'Напоминание', `%#${eventId}%`]
   );
   return Boolean(rows.length);
 }
 
-module.exports = { createNotification, listNotifications, markRead, hasDuplicateReminder };
+async function hasEmailLog(userId, eventId, type) {
+  const [rows] = await appPool.query(
+    'SELECT id FROM email_notification_log WHERE user_id = ? AND event_id = ? AND type = ? LIMIT 1',
+    [userId, eventId, type]
+  );
+  return Boolean(rows.length);
+}
+
+async function createEmailLog({ userId, eventId, type }) {
+  const [result] = await appPool.query(
+    'INSERT INTO email_notification_log (user_id, event_id, type) VALUES (?, ?, ?)',
+    [userId, eventId, type]
+  );
+  return result.insertId;
+}
+
+module.exports = { createNotification, listNotifications, markRead, markAllRead, hasDuplicateReminder, hasEmailLog, createEmailLog };

@@ -1,30 +1,22 @@
 <%- include('../partials/header', { title, currentUser }) %>
 
 <section class="hero">
-  <h1>Admin panel</h1>
-  <p>Manage user roles.</p>
+  <h1>Админ панель</h1>
+  <p>Управление пользователями и ролями.</p>
 </section>
 
-<% if (error) { %>
-  <div class="alert alert-error"><%= error %></div>
-<% } %>
-
-<% if (success) { %>
-  <div class="alert alert-success"><%= success %></div>
-<% } %>
-
 <section class="card">
-  <h2>Users</h2>
+  <h2>Пользователи</h2>
 
   <div class="table-wrapper">
     <table class="data-table">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
+          <th>Имя</th>
           <th>Email</th>
-          <th>Current role</th>
-          <th>Change role</th>
+          <th>Роль</th>
+          <th>Изменить роль</th>
         </tr>
       </thead>
 
@@ -45,7 +37,7 @@
                   <% }) %>
                 </select>
 
-                <button type="submit">Save</button>
+                <button type="submit">Сохранить</button>
               </form>
             </td>
           </tr>

@@ -214,6 +214,43 @@ async function listCities() {
   return rows.map((row) => row.city);
 }
 
+async function createCategory(name) {
+  const [result] = await appPool.query('INSERT INTO categories (name) VALUES (?)', [name]);
+  return result.insertId;
+}
+
+async function updateCategory(id, name) {
+  await appPool.query('UPDATE categories SET name = ? WHERE id = ?', [name, id]);
+}
+
+async function deleteCategory(id) {
+  await appPool.query('DELETE FROM categories WHERE id = ?', [id]);
+}
+
+async function getLocationById(id) {
+  const [rows] = await appPool.query('SELECT * FROM locations WHERE id = ?', [id]);
+  return rows[0] || null;
+}
+
+async function createLocation({ name, address, city, capacity }) {
+  const [result] = await appPool.query(
+    'INSERT INTO locations (name, address, city, capacity) VALUES (?, ?, ?, ?)',
+    [name, address, city, capacity]
+  );
+  return result.insertId;
+}
+
+async function updateLocation(id, { name, address, city, capacity }) {
+  await appPool.query(
+    'UPDATE locations SET name = ?, address = ?, city = ?, capacity = ? WHERE id = ?',
+    [name, address, city, capacity, id]
+  );
+}
+
+async function deleteLocation(id) {
+  await appPool.query('DELETE FROM locations WHERE id = ?', [id]);
+}
+
 async function createRegistration(userId, eventId) {
   await appPool.query('INSERT INTO registrations (user_id, event_id) VALUES (?, ?)', [userId, eventId]);
 }
@@ -239,13 +276,14 @@ async function listRegistrationsForEvent(eventId) {
   return rows;
 }
 
-async function listEventsForUser(userId) {
+async function listEventsForUser(userId, sortOrder) {
+  const order = sortOrder === 'desc' ? 'DESC' : 'ASC';
   const [rows] = await appPool.query(
     `${eventSelectFields}
      ${eventSelectFrom}
      LEFT JOIN registrations ur ON ur.event_id = e.id AND ur.user_id = ?
      WHERE e.organizer_id = ? OR ur.user_id = ?
-     ORDER BY e.start_at ASC`,
+     ORDER BY e.start_at ${order}`,
     [userId, userId, userId]
   );
   return rows;
@@ -292,6 +330,23 @@ async function listUpcomingEventsWithinHours(hours) {
   return rows;
 }
 
+async function listUpcomingEventsWithUsers(hours, minutesWindow) {
+  const minutesBefore = minutesWindow || 10;
+  const [rows] = await appPool.query(
+    `SELECT e.id, e.title, e.start_at, e.invitation_code,
+            r.user_id, u.email, u.email_notifications
+     FROM events e
+     JOIN registrations r ON r.event_id = e.id
+     JOIN users u ON u.id = r.user_id
+     WHERE e.status = 'active'
+       AND e.start_at BETWEEN
+         DATE_ADD(NOW(), INTERVAL (? * 60 - ?) MINUTE)
+         AND DATE_ADD(NOW(), INTERVAL (? * 60 + ?) MINUTE)`,
+    [hours, minutesBefore, hours, minutesBefore]
+  );
+  return rows;
+}
+
 module.exports = {
   listEvents,
   listCalendarEvents,
@@ -303,6 +358,13 @@ module.exports = {
   listCategories,
   listLocations,
   listCities,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getLocationById,
+  createLocation,
+  updateLocation,
+  deleteLocation,
   createRegistration,
   deleteRegistration,
   registrationExists,
@@ -311,5 +373,6 @@ module.exports = {
   addComment,
   listComments,
   markCompletedEvents,
-  listUpcomingEventsWithinHours
+  listUpcomingEventsWithinHours,
+  listUpcomingEventsWithUsers
 };

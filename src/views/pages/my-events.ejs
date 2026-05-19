@@ -4,7 +4,11 @@
     <h1>Мои мероприятия</h1>
     <p>Здесь собраны события, которые вы создали сами или на которые уже зарегистрировались.</p>
   </div>
-  <a class="button-link primary" href="/events/new">Создать новое мероприятие</a>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+    <a class="button-link <%= currentSort === 'desc' ? 'primary' : 'secondary' %>" href="/my-events?sort=desc">Сначала новые</a>
+    <a class="button-link <%= currentSort === 'asc' ? 'primary' : 'secondary' %>" href="/my-events?sort=asc">Сначала старые</a>
+    <a class="button-link primary" href="/events/new">Создать новое</a>
+  </div>
 </section>
 
 <section class="event-list">

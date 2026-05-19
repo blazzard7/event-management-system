@@ -1,0 +1,16 @@
+<%- include('../partials/header', { title, currentUser }) %>
+<section class="form-card">
+  <h1>Редактировать профиль</h1>
+  <form method="post" action="/profile/edit">
+    <label>Имя<input type="text" name="firstName" value="<%= currentUser.first_name %>" required></label>
+    <label>Фамилия<input type="text" name="lastName" value="<%= currentUser.last_name %>" required></label>
+    <label>Email<input type="email" name="email" value="<%= currentUser.email %>" required></label>
+    <label>Новый пароль <small>(оставьте пустым, если не хотите менять)</small><input type="password" name="password"></label>
+    <label class="checkbox-label">
+      <input type="checkbox" name="emailNotifications" <%= currentUser.email_notifications ? 'checked' : '' %>>
+      Получать уведомления о мероприятиях по email
+    </label>
+    <button type="submit">Сохранить</button>
+  </form>
+</section>
+<%- include('../partials/footer') %>

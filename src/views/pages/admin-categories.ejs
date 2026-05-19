@@ -1,0 +1,51 @@
+<%- include('../partials/header', { title, currentUser }) %>
+
+<section class="section-head">
+  <h1>Категории</h1>
+  <a class="button-link secondary" href="/admin/users">Пользователи</a>
+</section>
+
+<section class="card">
+  <h2>Создать категорию</h2>
+  <form method="post" action="/admin/categories" class="filters-form--inline" style="display:flex;gap:12px;align-items:end">
+    <label style="flex:1">
+      Название
+      <input type="text" name="name" required>
+    </label>
+    <button type="submit">Создать</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Список категорий</h2>
+  <% if (categories.length) { %>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% categories.forEach(function(cat) { %>
+            <tr>
+              <td><%= cat.id %></td>
+              <td><%= cat.name %></td>
+              <td>
+                <form method="post" action="/admin/categories/<%= cat.id %>/delete" style="display:inline">
+                  <button type="submit" class="danger-btn" onclick="return confirm('Удалить категорию?')">Удалить</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <p>Категорий пока нет.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

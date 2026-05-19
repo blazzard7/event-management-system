@@ -9,6 +9,7 @@ function validateRegistrationPayload(payload) {
   const password = String(payload.password || '');
   const firstName = normalizeText(payload.firstName);
   const lastName = normalizeText(payload.lastName);
+  const emailNotifications = payload.emailNotifications === true || payload.emailNotifications === 'on';
 
   if (!email || !password || !firstName || !lastName) {
     throw new AppError('Email, password, first name and last name are required', 400);
@@ -16,7 +17,7 @@ function validateRegistrationPayload(payload) {
   if (password.length < 6) {
     throw new AppError('Password must be at least 6 characters long', 400);
   }
-  return { email, password, firstName, lastName };
+  return { email, password, firstName, lastName, emailNotifications };
 }
 
 function validateLoginPayload(payload) {
